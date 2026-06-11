@@ -88,6 +88,8 @@ textarea,input{font-family:inherit}
 .sb-section-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gray-400);margin-bottom:4px;display:block;padding:0 4px}
 .sb-link{display:flex;align-items:center;gap:10px;padding:8px 10px;font-size:12.5px;color:var(--gray-600);font-weight:500;cursor:pointer;border-radius:var(--r-sm);transition:var(--t)}
 .sb-link:hover{color:var(--accent);background:var(--white)}
+.sb-link-feature{background:var(--accent-50);color:var(--accent-dark);font-weight:700;margin-bottom:6px;border:1px solid var(--accent-100)}
+.sb-link-feature:hover{background:var(--accent-100);color:var(--accent-dark)}
 
 /* ============ MAIN ============ */
 .main{margin-left:var(--sidebar-w);margin-top:var(--header-h);min-height:calc(100vh - var(--header-h));padding:36px 40px 80px;position:relative;z-index:1}
@@ -207,6 +209,31 @@ textarea,input{font-family:inherit}
 .tool-title{font-weight:700;color:var(--gray-900);margin-bottom:8px;font-size:14px}
 .tool-desc{font-size:12px;color:var(--gray-500);line-height:1.6}
 
+/* ============ HANDBOOK ============ */
+.hb-hero{background:linear-gradient(135deg,var(--accent-dark),var(--accent));color:#fff;border-radius:var(--r-xl);padding:32px;margin-bottom:24px;position:relative;overflow:hidden}
+.hb-hero::after{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08)}
+.hb-hero h1{color:#fff;margin-bottom:10px;position:relative}
+.hb-hero p{color:rgba(255,255,255,.9);font-size:14px;max-width:640px;position:relative;line-height:1.7}
+.hb-hero .btn{margin-top:18px;background:#fff;color:var(--accent-dark);border-color:#fff;font-weight:700;position:relative}
+.hb-hero .btn:hover{background:var(--accent-50);color:var(--accent-dark)}
+.callout{display:flex;gap:14px;padding:16px 18px;border-radius:var(--r-md);border:var(--border);background:var(--gray-50);margin-bottom:12px}
+.callout:last-child{margin-bottom:0}
+.callout-icon{font-size:22px;flex-shrink:0;line-height:1.3}
+.callout-body{flex:1}
+.callout-title{font-weight:700;color:var(--gray-900);font-size:13.5px;margin-bottom:3px}
+.callout-text{font-size:12.5px;color:var(--gray-600);line-height:1.6}
+.construct-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.construct-card{border:var(--border);border-radius:var(--r-md);padding:18px;background:var(--white);border-left:4px solid var(--accent)}
+.construct-card .num{font-size:11px;font-weight:800;color:var(--accent);letter-spacing:.05em}
+.construct-card .title{font-weight:700;color:var(--gray-900);font-size:14px;margin:4px 0 8px}
+.construct-card .skills{display:flex;flex-wrap:wrap;gap:6px}
+.construct-card .skills span{font-size:11px;font-weight:600;padding:4px 9px;border-radius:99px;background:var(--accent-50);color:var(--accent-dark)}
+.workflow-list{list-style:none;counter-reset:wf;display:grid;gap:10px}
+.workflow-list li{counter-increment:wf;display:flex;gap:14px;padding:14px 16px;background:var(--gray-50);border:var(--border);border-radius:var(--r-md)}
+.workflow-list li::before{content:counter(wf);flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.workflow-list .wf-title{font-weight:700;color:var(--gray-900);font-size:13.5px;margin-bottom:2px}
+.workflow-list .wf-text{font-size:12.5px;color:var(--gray-600);line-height:1.6}
+
 .activity-feed{list-style:none;display:grid;gap:8px}
 .activity-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;background:var(--success-50);border:1px solid #bbf7d0;border-radius:var(--r-md)}
 .activity-task{font-weight:600;color:var(--gray-800);font-size:13px}
@@ -311,11 +338,10 @@ textarea,input{font-family:inherit}
   </div>
   <nav class="module-list" id="moduleList"></nav>
   <div class="sidebar-bottom">
+    <a class="sb-link sb-link-feature" id="handbookLink" href="#">📖 Deep Skilling Handbook</a>
     <span class="sb-section-label">Resources</span>
     <a class="sb-link" id="filesLink" href="#">📁 All Files</a>
     <a class="sb-link" id="upskillingLink" href="#">📄 Upskilling PDFs</a>
-    <a class="sb-link" href="https://learn.microsoft.com/" target="_blank" rel="noopener">📚 MS Learn</a>
-    <a class="sb-link" href="https://docs.microsoft.com/en-us/dotnet/" target="_blank" rel="noopener">📖 .NET Docs</a>
     <a class="sb-link" id="infoLink" href="#">ℹ️ Program Info</a>
   </div>
 </aside>
@@ -414,6 +440,7 @@ function render(){
   if(activeModuleId==="home") renderDashboard();
   else if(activeModuleId==="files") renderFiles();
   else if(activeModuleId==="upskilling") renderUpskilling();
+  else if(activeModuleId==="handbook") renderHandbook();
   else if(activeModuleId==="info") renderInfo();
   else renderModule(MODULES.find(m=>m.id===activeModuleId));
   document.getElementById("sidebar").classList.remove("open");
@@ -588,23 +615,20 @@ function fileCardHtml(name,type,path){
 function openFileInViewer(filePath){
   const assetPath=resolveAssetPath(filePath);
   const fullPath=new URL(assetPath,window.location.href).href;
-  const encoded=encodeURIComponent(fullPath);
-  const isDeployed=/^https?:\/\//i.test(fullPath) && window.location.protocol!=='file:';
-  if(filePath.endsWith('.pdf')){
-    if(isDeployed){
-      window.open(`https://docs.google.com/viewer?url=${encoded}`,'_blank');
-    }else{
-      window.open(fullPath,'_blank');
-    }
-  }else if(filePath.endsWith('.docx')){
-    if(isDeployed){
-      window.open(`https://view.officeapps.live.com/op/embed.aspx?src=${encoded}`,'_blank');
-    }else{
-      window.open(fullPath,'_blank');
-    }
-  }else{
-    window.open(fullPath,'_blank');
+  const lower=filePath.toLowerCase();
+  const isHttp=/^https?:\/\//i.test(fullPath);
+  // PDFs render natively in Chrome's built-in viewer — always open directly in a new tab.
+  if(lower.endsWith('.pdf')){
+    window.open(fullPath,'_blank','noopener');
+    return;
   }
+  // DOCX/PPTX can't render natively. When served over http(s), use Office Online so they
+  // open in-browser; on file:// there's no public URL, so just hand off to the browser.
+  if(/\.(docx?|pptx?|xlsx?)$/i.test(lower) && isHttp){
+    window.open(`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fullPath)}`,'_blank','noopener');
+    return;
+  }
+  window.open(fullPath,'_blank','noopener');
 }
 
 function renderModule(m){
@@ -755,6 +779,125 @@ function renderUpskilling(){
   document.getElementById("content").innerHTML=html;
 }
 
+function renderHandbook(){
+  const html=`<div class="page">
+    <div class="hb-hero">
+      <h1>📖 Deep Skilling Handbook</h1>
+      <p>Your official guide to the Digital Nurture 5.0 — DotNet FSE (Angular) program. Everything below is summarized from the Cognizant handbook: how the program is structured, how to complete it, and how to make the most of your 7 weeks.</p>
+      <button class="btn" type="button" onclick="openFileInViewer('./DN5_0-Deepskilling-Handbook-DotNet-FSE-Angular.pdf')">📄 Open full handbook PDF</button>
+    </div>
+
+    <div class="panel">
+      <h3>Program Highlights</h3>
+      <div class="callout">
+        <span class="callout-icon">🗓️</span>
+        <div class="callout-body">
+          <div class="callout-title">7-week deep-skilling journey</div>
+          <div class="callout-text">Work through the recommended modules in sequence, then take the Deep Skilling Final Assessment. Dedicate <b>10–12 focused hours per week</b> (1–2 hours daily, or longer weekend sessions).</div>
+        </div>
+      </div>
+      <div class="callout">
+        <span class="callout-icon">🧪</span>
+        <div class="callout-body">
+          <div class="callout-title">Blended learning</div>
+          <div class="callout-text">Self-paced learning through open-source reference links, plus <b>bi-weekly SME connect sessions</b> with experts (100% attendance is mandatory).</div>
+        </div>
+      </div>
+      <div class="callout">
+        <span class="callout-icon">🤖</span>
+        <div class="callout-body">
+          <div class="callout-title">Cognizant SkillSpring</div>
+          <div class="callout-text">An AI-native, conversational learning platform. You'll be enrolled in relevant courses within ~1.5 weeks of starting and encouraged to use it to accelerate mastery.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>The Competency Landscape</h3>
+      <p style="color:var(--gray-600);font-size:13px;margin-bottom:16px">The program follows a recommended sequence across four engineering constructs — foundation first, then the layers built on top of it.</p>
+      <div class="construct-grid">
+        <div class="construct-card">
+          <div class="num">CONSTRUCT 1</div>
+          <div class="title">Engineering Concepts</div>
+          <div class="callout-text" style="margin-bottom:10px">The foundation all languages &amp; frameworks are built on.</div>
+          <div class="skills"><span>Design Patterns</span><span>Data Structures &amp; Algorithms</span></div>
+        </div>
+        <div class="construct-card">
+          <div class="num">CONSTRUCT 2</div>
+          <div class="title">Programming Languages</div>
+          <div class="callout-text" style="margin-bottom:10px">Implement the logic your requirements need.</div>
+          <div class="skills"><span>C# (upskilling)</span><span>Advanced SQL</span><span>NUnit &amp; Moq</span></div>
+        </div>
+        <div class="construct-card">
+          <div class="num">CONSTRUCT 3</div>
+          <div class="title">Products &amp; Frameworks</div>
+          <div class="callout-text" style="margin-bottom:10px">Build real applications faster with integrated features.</div>
+          <div class="skills"><span>EF Core 8.0</span><span>ASP.NET Core Web API</span><span>Microservices</span><span>Angular</span></div>
+        </div>
+        <div class="construct-card">
+          <div class="num">CONSTRUCT 4</div>
+          <div class="title">Platforms</div>
+          <div class="callout-text" style="margin-bottom:10px">Host, ship, and scale what you build.</div>
+          <div class="skills"><span>Git</span><span>CI/CD</span><span>Docker</span><span>Gen AI</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>How You Complete the Program</h3>
+      <div class="callout">
+        <span class="callout-icon">✅</span>
+        <div class="callout-body">
+          <div class="callout-title">Hands-on Exercises</div>
+          <div class="callout-text">Complete the <b>23 mandatory hands-on exercises</b> mapped against every skill (tracked right here on this site). Additional exercises are optional but recommended.</div>
+        </div>
+      </div>
+      <div class="callout">
+        <span class="callout-icon">🎓</span>
+        <div class="callout-body">
+          <div class="callout-title">Final KBA Assessment</div>
+          <div class="callout-text">Pass the final <b>Knowledge-Based Assessment</b>, which evaluates your comprehensive understanding across every skill covered in the program.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Exercise Workflow</h3>
+      <ol class="workflow-list">
+        <li><div><div class="wf-title">Access &amp; download</div><div class="wf-text">Exercises live in the public GitHub repo. Use <b>Code → Download ZIP</b> to grab all hands-on content. (All files are also available right here under "All Files".)</div></div></li>
+        <li><div><div class="wf-title">Identify the mandatory ones</div><div class="wf-text">The mandatory hands-on are listed in <b>DN — DotNet FSE Mandatory hands-on detail.xlsx</b> — that's the 23 tasks tracked on this dashboard.</div></div></li>
+        <li><div><div class="wf-title">Solve thoughtfully</div><div class="wf-text">Understand the problem, apply the week's concepts, and code the solution accurately. Take your time.</div></div></li>
+        <li><div><div class="wf-title">Self-evaluate</div><div class="wf-text">Compare your approach against any hints/solutions, and reflect on areas to improve.</div></div></li>
+        <li><div><div class="wf-title">Submit</div><div class="wf-text">Organize solutions week-wise, push them to a <b>public GitHub repo</b> on your account, and share the URL with your POC on demand.</div></div></li>
+      </ol>
+    </div>
+
+    <div class="panel">
+      <h3>Effective Learning Strategies</h3>
+      <div class="panel-grid-3">
+        <div class="tool-card"><div class="tool-icon">📅</div><div class="tool-title">Study Schedule</div><div class="tool-desc">Dedicate fixed times weekly. Aim for 10–12 hours of study per week.</div></div>
+        <div class="tool-card"><div class="tool-icon">🎯</div><div class="tool-title">Set Clear Goals</div><div class="tool-desc">Define weekly targets and break tasks into manageable chunks.</div></div>
+        <div class="tool-card"><div class="tool-icon">🧠</div><div class="tool-title">Active Learning</div><div class="tool-desc">Engage hands-on. Practice coding and solving problems regularly.</div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Required Tools</h3>
+      <ul class="resource-list">
+        <li class="resource-item"><span class="file-icon" style="width:32px;height:32px;font-size:14px">🛠️</span><a href="https://visualstudio.microsoft.com/vs/community/" target="_blank" rel="noopener">Visual Studio Community Edition</a><span class="resource-domain">visualstudio.microsoft.com</span></li>
+        <li class="resource-item"><span class="file-icon" style="width:32px;height:32px;font-size:14px">📊</span><a href="https://learn.microsoft.com/en-us/ssms/download-sql-server-management-studio-ssms" target="_blank" rel="noopener">SQL Server Management Studio (SSMS)</a><span class="resource-domain">learn.microsoft.com</span></li>
+        <li class="resource-item"><span class="file-icon" style="width:32px;height:32px;font-size:14px">💻</span><a href="https://code.visualstudio.com/download" target="_blank" rel="noopener">Visual Studio Code</a><span class="resource-domain">code.visualstudio.com</span></li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h3>What's Next?</h3>
+      <p style="color:var(--gray-600);font-size:13.5px;line-height:1.7">After the 7-week program you'll take the <b>Knowledge-Based Assessment (KBA)</b> to certify your skills, covering everything you've learned. <i>Disclaimer: reference links are external resources curated for learning; you're free to use additional sources too.</i></p>
+    </div>
+  </div>`;
+  document.getElementById("content").innerHTML=html;
+}
+
 function renderInfo(){
   const html=`<div class="page">
     <div class="hero"><h1>About DN 5.0</h1><div class="subtext">DotNet FSE Deep Skilling Program</div></div>
@@ -842,6 +985,7 @@ function init(){
   document.getElementById("hamburger").addEventListener("click",()=>toggleSidebar());
   document.getElementById("scrim").addEventListener("click",()=>toggleSidebar(false));
   document.getElementById("searchInput").addEventListener("input",renderSidebar);
+  document.getElementById("handbookLink").addEventListener("click",e=>{e.preventDefault();activeModuleId="handbook";render()});
   document.getElementById("filesLink").addEventListener("click",e=>{e.preventDefault();activeModuleId="files";render()});
   document.getElementById("upskillingLink").addEventListener("click",e=>{e.preventDefault();activeModuleId="upskilling";render()});
   document.getElementById("infoLink").addEventListener("click",e=>{e.preventDefault();activeModuleId="info";render()});
