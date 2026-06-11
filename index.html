@@ -22,7 +22,21 @@
 --ease:cubic-bezier(.16,1,.3,1);--t:all .2s var(--ease);
 --header-h:64px;--sidebar-w:280px;
 }
-html{font-size:16px;scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html.dark{
+--white:#1a2234;--gray-50:#0f1623;--gray-100:#1e2839;--gray-200:#2c3850;--gray-300:#3b4a63;--gray-400:#64748b;--gray-500:#94a3b8;--gray-600:#b6c2d4;--gray-700:#cbd5e1;--gray-800:#e2e8f0;--gray-900:#f1f5f9;
+--accent:#3b82f6;--accent-light:#60a5fa;--accent-dark:#93c5fd;--accent-50:#1e293b;--accent-100:#1e3a5f;
+--success:#22c55e;--success-50:#14271c;--warning:#f59e0b;--warning-50:#2a2010;--danger:#f87171;--danger-50:#2a1414;
+--border:1px solid #2c3850;
+--sh-sm:0 1px 2px rgba(0,0,0,.3);
+--sh-md:0 2px 8px rgba(0,0,0,.4);
+--sh-lg:0 8px 24px rgba(0,0,0,.45);
+--sh-xl:0 20px 48px rgba(0,0,0,.55);
+}
+html.dark body{background:#0a0f1a}
+html.dark .topbar{background:rgba(20,28,44,.8)}
+html.dark .ms-badge.unlocked{background:linear-gradient(160deg,var(--accent-100),var(--white))}
+html.dark .bg-blobs span{opacity:.35}
+html{font-size:16px;scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%;transition:background .3s var(--ease)}
 body{font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;background:var(--gray-50);color:var(--gray-900);font-size:14px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
 /* ambient background blobs (fixed, behind everything) */
@@ -241,6 +255,67 @@ textarea,input{font-family:inherit}
 
 .empty-state{text-align:center;padding:44px 20px;color:var(--gray-400);font-size:13px}
 
+/* ============ NEXT-BEST-ACTION ============ */
+.next-card{display:flex;align-items:center;gap:16px;padding:18px 22px;margin-bottom:20px;border-radius:var(--r-lg);background:linear-gradient(120deg,var(--accent),var(--accent-light));color:#fff;cursor:pointer;box-shadow:0 8px 24px rgba(37,99,235,.28);transition:var(--t);position:relative;overflow:hidden}
+.next-card::after{content:'';position:absolute;top:-30px;right:-20px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.1)}
+.next-card:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(37,99,235,.36)}
+.next-card.done-card{background:linear-gradient(120deg,var(--success),#22c55e);box-shadow:0 8px 24px rgba(22,163,74,.28);cursor:default}
+.next-card.done-card:hover{transform:none}
+.next-icon{font-size:30px;flex-shrink:0;position:relative}
+.next-body{flex:1;min-width:0;position:relative}
+.next-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;opacity:.85}
+.next-title{font-size:16px;font-weight:800;margin:2px 0;letter-spacing:-.01em}
+.next-meta{font-size:12.5px;opacity:.9;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.next-go{flex-shrink:0;font-weight:800;font-size:14px;background:rgba(255,255,255,.2);padding:9px 16px;border-radius:99px;position:relative;transition:var(--t)}
+.next-card:hover .next-go{background:rgba(255,255,255,.32)}
+
+/* ============ INSIGHT STRIP ============ */
+.insight-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.insight{display:flex;align-items:center;gap:12px;background:var(--white);border:var(--border);border-radius:var(--r-lg);padding:16px 18px;box-shadow:var(--sh-sm);transition:var(--t)}
+.insight:hover{transform:translateY(-2px);box-shadow:var(--sh-md)}
+.insight-icon{font-size:24px;flex-shrink:0}
+.insight-num{font-size:24px;font-weight:800;color:var(--gray-900);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.insight-sub{font-size:13px;font-weight:600;color:var(--gray-400)}
+.insight-label{font-size:11.5px;color:var(--gray-500);font-weight:600;margin-top:3px}
+
+/* ============ CONSTRUCT RINGS ============ */
+.rings-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.ring-card{text-align:center;padding:16px 10px;border:var(--border);border-radius:var(--r-md);background:var(--gray-50);position:relative;transition:var(--t)}
+.ring-card:hover{background:var(--white);box-shadow:var(--sh-sm)}
+.cring{width:72px;height:72px;display:block;margin:0 auto;transform:rotate(-90deg)}
+.cring-bg{fill:none;stroke:var(--gray-200);stroke-width:6}
+.cring-fg{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .8s var(--ease)}
+.cring-pct{margin-top:-50px;margin-bottom:24px;font-size:16px;font-weight:800;font-variant-numeric:tabular-nums;position:relative}
+.ring-name{font-size:12px;font-weight:700;color:var(--gray-800);margin-top:6px}
+.ring-sub{font-size:11px;color:var(--gray-500);margin-top:2px;font-variant-numeric:tabular-nums}
+
+/* ============ MILESTONE BADGES ============ */
+.badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ms-badge{text-align:center;padding:18px 12px;border-radius:var(--r-md);border:var(--border);transition:var(--t);position:relative}
+.ms-badge.locked{background:var(--gray-50);opacity:.6;filter:grayscale(1)}
+.ms-badge.unlocked{background:linear-gradient(160deg,var(--accent-50),var(--white));border-color:var(--accent-light);box-shadow:0 4px 12px rgba(37,99,235,.1)}
+.ms-badge.unlocked::after{content:'✓';position:absolute;top:8px;right:10px;width:18px;height:18px;border-radius:50%;background:var(--success);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.ms-badge.unlocked .ms-icon{animation:badgePop .5s var(--ease)}
+.ms-icon{font-size:30px;line-height:1}
+.ms-label{font-weight:700;font-size:12.5px;color:var(--gray-900);margin-top:8px}
+.ms-desc{font-size:11px;color:var(--gray-500);margin-top:3px;line-height:1.4}
+
+/* ============ MANAGE / CHIPS ============ */
+.manage-actions{display:flex;flex-wrap:wrap;gap:10px}
+.btn.danger{color:var(--danger);border-color:#fecaca;background:var(--danger-50)}
+.btn.danger:hover{background:var(--danger);color:#fff;border-color:var(--danger)}
+.filter-chips{display:flex;gap:6px;margin-top:10px}
+.chip{flex:1;padding:6px 4px;font-size:11.5px;font-weight:600;color:var(--gray-500);background:var(--gray-100);border:1px solid transparent;border-radius:var(--r-sm);cursor:pointer;transition:var(--t)}
+.chip:hover{color:var(--gray-800)}
+.chip.active{background:var(--accent);color:#fff}
+.mod-theory{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--gray-400);background:var(--gray-100);padding:2px 6px;border-radius:99px}
+
+/* ============ THEME TOGGLE ============ */
+.theme-toggle{background:var(--gray-100);border:none;width:38px;height:38px;border-radius:10px;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;transition:var(--t)}
+.theme-toggle:hover{background:var(--gray-200);transform:scale(1.05)}
+
+@keyframes badgePop{0%{transform:scale(.4) rotate(-15deg)}60%{transform:scale(1.15) rotate(8deg)}100%{transform:scale(1) rotate(0)}}
+
 /* ============ MODAL ============ */
 .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;z-index:200;align-items:flex-end;justify-content:center;padding:0}
 .modal-overlay.active{display:flex;animation:fadeIn .2s var(--ease)}
@@ -272,7 +347,7 @@ textarea,input{font-family:inherit}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ============ RESPONSIVE ============ */
-@media(max-width:1100px){.stat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:1100px){.stat-grid,.insight-strip,.rings-grid{grid-template-columns:repeat(2,1fr)}.badge-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:980px){
   :root{--sidebar-w:0px}
   .hamburger{display:flex}
@@ -297,8 +372,12 @@ textarea,input{font-family:inherit}
   .modal-card{max-height:90vh}
   .tabs{width:100%}
   .tab{flex:1;text-align:center;padding:9px 10px}
+  .next-card{flex-wrap:wrap}
+  .next-go{display:none}
+  .insight-strip,.rings-grid,.badge-grid{grid-template-columns:repeat(2,1fr)}
+  .manage-actions .btn{flex:1}
 }
-@media(max-width:420px){.stat-grid{grid-template-columns:1fr}}
+@media(max-width:420px){.stat-grid,.insight-strip,.badge-grid{grid-template-columns:1fr}.rings-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -319,6 +398,7 @@ textarea,input{font-family:inherit}
     <div class="tc-caption" id="progressCaption">0 of 23</div>
   </div>
   <div class="topbar-right">
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme" title="Toggle dark mode">🌙</button>
     <div class="ring-wrap">
       <svg class="progress-ring" viewBox="0 0 40 40">
         <circle class="progress-ring-circle" cx="20" cy="20" r="18"></circle>
@@ -333,6 +413,12 @@ textarea,input{font-family:inherit}
   <div class="sidebar-top">
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="Search modules…" autocomplete="off">
+    </div>
+    <div class="filter-chips" id="filterChips">
+      <button class="chip active" type="button" data-filter="all">All</button>
+      <button class="chip" type="button" data-filter="not-started">To do</button>
+      <button class="chip" type="button" data-filter="in-progress">Active</button>
+      <button class="chip" type="button" data-filter="done">Done</button>
     </div>
     <span class="sidebar-label">Modules</span>
   </div>
@@ -422,10 +508,30 @@ const UPSKILLING_PDFS = [
   {name:"Module 3-C#ADO.NET.pdf", path:"./Upskilling/Module 3-C#ADO.NET.pdf", modules:[5,6]}
 ];
 
-let state={tasks:{},notes:{},lastUpdated:null};
-let activeModuleId="home";
+// Four engineering constructs from the handbook → module numbers that belong to each
+const CONSTRUCTS=[
+  {key:"engineering", name:"Engineering Concepts", icon:"🧠", color:"#2563eb", modules:[1,2]},
+  {key:"languages",   name:"Programming Languages",icon:"💬", color:"#7c3aed", modules:[3,4]},
+  {key:"frameworks",  name:"Products & Frameworks", icon:"🧩", color:"#0891b2", modules:[5,6,7,8]},
+  {key:"platforms",   name:"Platforms",            icon:"🚀", color:"#16a34a", modules:[9,10,11,12,13,14]}
+];
+// rough per-task effort in hours (for "hours left" + ETA)
+const TASK_HOURS=2;
 
-function loadState(){try{const raw=localStorage.getItem("dn5_tracker_v1");if(raw){state=JSON.parse(raw)}}catch(e){console.error("Error loading state",e)}}
+const MILESTONES=[
+  {id:"first",     icon:"🌱", label:"First Step",      desc:"Complete your first task",         test:d=>d>=1},
+  {id:"five",      icon:"⚡", label:"Getting Going",    desc:"Complete 5 tasks",                 test:d=>d>=5},
+  {id:"halfway",   icon:"🌗", label:"Halfway There",   desc:"Complete 12 of 23 tasks",          test:d=>d>=12},
+  {id:"construct", icon:"🏗️", label:"Construct Master", desc:"Finish all Engineering Concepts",  test:()=>constructDone(CONSTRUCTS[0])},
+  {id:"streak3",   icon:"🔥", label:"On Fire",         desc:"Hit a 3-day streak",               test:()=>currentStreak()>=3},
+  {id:"certified", icon:"🏆", label:"Certified",       desc:"Complete all 23 tasks",            test:d=>d>=23}
+];
+
+let state={tasks:{},notes:{},lastUpdated:null,theme:null};
+let activeModuleId="home";
+let sidebarFilter="all"; // all | not-started | in-progress | done
+
+function loadState(){try{const raw=localStorage.getItem("dn5_tracker_v1");if(raw){state=Object.assign({tasks:{},notes:{},theme:null},JSON.parse(raw))}}catch(e){console.error("Error loading state",e)}}
 function saveState(){try{state.lastUpdated=new Date().toISOString();localStorage.setItem("dn5_tracker_v1",JSON.stringify(state))}catch(e){console.error("Error saving state",e)}}
 
 function getWeek(){const start=new Date(2026,0,5);const today=new Date();const diff=Math.floor((today-start)/(1000*60*60*24*7))+1;return Math.min(Math.max(diff,1),7)}
@@ -433,6 +539,54 @@ function isDone(id){return state.tasks[id]?.completed||false}
 function taskDoneCount(){return Object.keys(state.tasks).filter(k=>isDone(k)).length}
 function totalTasks(){return 23}
 function moduleDoneCount(m){if(m.tasks.length===0)return 0;let n=0;m.tasks.forEach(t=>{if(isDone(t.id))n++});return n}
+function moduleStatus(m){if(m.tasks.length===0)return"theory";const d=moduleDoneCount(m);if(d===0)return"not-started";if(d===m.tasks.length)return"done";return"in-progress"}
+
+// ---- analytics ----
+function completedDates(){
+  return Object.values(state.tasks)
+    .filter(t=>t.completed&&t.completedAt)
+    .map(t=>new Date(t.completedAt));
+}
+function dayKey(d){return d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate()}
+function currentStreak(){
+  const days=new Set(completedDates().map(dayKey));
+  if(days.size===0)return 0;
+  let streak=0;const cur=new Date();
+  // streak only counts if a task was done today or yesterday (still "active")
+  if(!days.has(dayKey(cur))){cur.setDate(cur.getDate()-1);if(!days.has(dayKey(cur)))return 0}
+  while(days.has(dayKey(cur))){streak++;cur.setDate(cur.getDate()-1)}
+  return streak;
+}
+function constructProgress(c){
+  const mods=MODULES.filter(m=>c.modules.includes(m.num)&&m.tasks.length>0);
+  const total=mods.reduce((n,m)=>n+m.tasks.length,0);
+  const done=mods.reduce((n,m)=>n+moduleDoneCount(m),0);
+  return{done,total,pct:total?Math.round(done/total*100):0};
+}
+function constructDone(c){const p=constructProgress(c);return p.total>0&&p.done===p.total}
+function tasksPerWeek(){
+  const dates=completedDates();
+  if(dates.length<1)return 0;
+  const first=new Date(Math.min(...dates));
+  const weeks=Math.max((Date.now()-first)/(1000*60*60*24*7),1/7);
+  return dates.length/weeks;
+}
+function estimatedFinish(){
+  const remaining=totalTasks()-taskDoneCount();
+  if(remaining<=0)return null;
+  const rate=tasksPerWeek();
+  if(rate<=0)return null;
+  const weeksLeft=remaining/rate;
+  const d=new Date();d.setDate(d.getDate()+Math.ceil(weeksLeft*7));
+  return{date:d,weeksLeft};
+}
+function hoursLeft(){return(totalTasks()-taskDoneCount())*TASK_HOURS}
+function nextTask(){
+  for(const m of MODULES){
+    for(const t of m.tasks){ if(!isDone(t.id)) return{module:m,task:t}; }
+  }
+  return null;
+}
 
 function render(){
   renderTopbar();
@@ -466,18 +620,26 @@ function renderSidebar(){
   const list=document.getElementById("moduleList");
   const filter=(document.getElementById("searchInput").value||"").toLowerCase();
   list.innerHTML="";
+  let shown=0;
   MODULES.forEach(m=>{
     if(filter&&!m.name.toLowerCase().includes(filter)) return;
+    const st=moduleStatus(m); // not-started | in-progress | done | theory
+    if(sidebarFilter!=="all"){
+      if(sidebarFilter==="not-started" && !(st==="not-started"||st==="theory")) return;
+      if(sidebarFilter==="in-progress" && st!=="in-progress") return;
+      if(sidebarFilter==="done" && st!=="done") return;
+    }
+    shown++;
     const done=moduleDoneCount(m);
-    const allDone=m.tasks.length>0&&done===m.tasks.length;
-    const inProgress=m.tasks.length>0&&done>0&&done<m.tasks.length;
     const item=document.createElement("div");
     item.className=`mod-item ${activeModuleId===m.id?"active":""}`;
-    const dotClass=allDone?"done":inProgress?"progress":"";
-    item.innerHTML=`<span class="mod-dot ${dotClass}"></span><span class="mod-num">${String(m.num).padStart(2,"0")}</span><span class="mod-name">${m.name}</span><span class="mod-count">${done}/${m.tasks.length}</span>`;
+    const dotClass=st==="done"?"done":st==="in-progress"?"progress":"";
+    const countLabel=m.tasks.length>0?`${done}/${m.tasks.length}`:`<span class="mod-theory">theory</span>`;
+    item.innerHTML=`<span class="mod-dot ${dotClass}"></span><span class="mod-num">${String(m.num).padStart(2,"0")}</span><span class="mod-name">${m.name}</span><span class="mod-count">${countLabel}</span>`;
     item.addEventListener("click",()=>{activeModuleId=m.id;render()});
     list.appendChild(item);
   });
+  if(shown===0){list.innerHTML=`<div class="empty-state" style="padding:24px 12px">No modules match.</div>`}
 }
 
 function renderDashboard(){
@@ -493,28 +655,84 @@ function renderDashboard(){
   const upcomingModules=MODULES.filter(m=>m.tasks.length>0&&moduleDoneCount(m)===0);
 
   const greeting=new Date().getHours()<12?"morning":new Date().getHours()<17?"afternoon":"evening";
+  const streak=currentStreak();
+  const eta=estimatedFinish();
+  const hrs=hoursLeft();
+  const nt=nextTask();
+
   let html=`<div class="page">
     <div class="hero">
       <h1>Good ${greeting}, let's keep building 👋</h1>
       <div class="subtext">${dateStr} · 14 modules · 23 mandatory tasks</div>
     </div>
 
-    <div class="stat-grid">
-      <div class="stat-card">
-        <div class="stat-num">23</div>
-        <div class="stat-label">Total tasks</div>
+    ${nt?`<div class="next-card" onclick="activeModuleId='${nt.module.id}';render();setTimeout(()=>openTaskModal('${nt.task.id}'),120)">
+      <div class="next-icon">👉</div>
+      <div class="next-body">
+        <div class="next-label">Up next</div>
+        <div class="next-title">Module ${nt.module.num} · ${nt.task.name}</div>
+        <div class="next-meta">${nt.module.name} · 📄 ${nt.task.file}</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-num green">${done}</div>
-        <div class="stat-label">Completed</div>
+      <div class="next-go">Start →</div>
+    </div>`:`<div class="next-card done-card">
+      <div class="next-icon">🎉</div>
+      <div class="next-body">
+        <div class="next-label">All done</div>
+        <div class="next-title">You've completed all 23 mandatory tasks!</div>
+        <div class="next-meta">Time for the final KBA assessment. Congratulations 🏆</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-num amber">${inProgressModules.length}</div>
-        <div class="stat-label">In Progress</div>
+    </div>`}
+
+    <div class="insight-strip">
+      <div class="insight">
+        <div class="insight-icon">🔥</div>
+        <div><div class="insight-num">${streak}</div><div class="insight-label">day streak</div></div>
       </div>
-      <div class="stat-card">
-        <div class="stat-num gray">${remaining}</div>
-        <div class="stat-label">Remaining</div>
+      <div class="insight">
+        <div class="insight-icon">✅</div>
+        <div><div class="insight-num">${done}<span class="insight-sub">/${total}</span></div><div class="insight-label">tasks done</div></div>
+      </div>
+      <div class="insight">
+        <div class="insight-icon">⏳</div>
+        <div><div class="insight-num">≈${hrs}<span class="insight-sub">hrs</span></div><div class="insight-label">work left</div></div>
+      </div>
+      <div class="insight">
+        <div class="insight-icon">🎯</div>
+        <div><div class="insight-num">${eta?eta.date.toLocaleDateString('en-US',{month:'short',day:'numeric'}):done>=total?'Done':'—'}</div><div class="insight-label">${eta?'est. finish':done>=total?'completed':'finish ETA'}</div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Progress by Construct</h3>
+      <div class="rings-grid">
+        ${CONSTRUCTS.map(c=>{
+          const p=constructProgress(c);
+          const circ=2*Math.PI*26;
+          const off=circ-(p.pct/100)*circ;
+          return `<div class="ring-card">
+            <svg class="cring" viewBox="0 0 64 64">
+              <circle cx="32" cy="32" r="26" class="cring-bg"></circle>
+              <circle cx="32" cy="32" r="26" class="cring-fg" style="stroke:${c.color};stroke-dasharray:${circ};stroke-dashoffset:${off}"></circle>
+            </svg>
+            <div class="cring-pct" style="color:${c.color}">${p.pct}%</div>
+            <div class="ring-name">${c.icon} ${c.name}</div>
+            <div class="ring-sub">${p.done}/${p.total} tasks</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Milestones</h3>
+      <div class="badge-grid">
+        ${MILESTONES.map(ms=>{
+          const unlocked=ms.test(done);
+          return `<div class="ms-badge ${unlocked?'unlocked':'locked'}" title="${ms.desc}">
+            <div class="ms-icon">${ms.icon}</div>
+            <div class="ms-label">${ms.label}</div>
+            <div class="ms-desc">${ms.desc}</div>
+          </div>`;
+        }).join('')}
       </div>
     </div>
 
@@ -581,13 +799,56 @@ function renderDashboard(){
       <h3>Your Recent Completions</h3>
       ${Object.keys(state.tasks).filter(k=>state.tasks[k].completed).length>0?`<ul class="activity-feed">
         ${Object.keys(state.tasks).filter(k=>state.tasks[k].completed).sort((a,b)=>new Date(state.tasks[b].completedAt)-new Date(state.tasks[a].completedAt)).slice(0,5).map(k=>{
-          const mod=MODULES.find(m=>k.startsWith(m.id));
-          return `<li class="activity-item"><div class="activity-task">${mod?mod.name:k}</div><div class="activity-time">${new Date(state.tasks[k].completedAt).toLocaleDateString()}</div></li>`;
+          let label=k;const mod=MODULES.find(m=>m.tasks.some(t=>t.id===k));
+          if(mod){const t=mod.tasks.find(t=>t.id===k);label=`<b>${t?t.name:k}</b> · M${mod.num}`}
+          return `<li class="activity-item"><div class="activity-task">✓ ${label}</div><div class="activity-time">${new Date(state.tasks[k].completedAt).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div></li>`;
         }).join('')}
       </ul>`:'<div class="empty-state">No completed tasks yet. Start your first module!</div>'}
     </div>
+
+    <div class="panel">
+      <h3>Manage Progress</h3>
+      <p style="color:var(--gray-500);font-size:13px;margin-bottom:16px">Your progress is saved in this browser only. Export a backup to move it to another device, or import a saved file.</p>
+      <div class="manage-actions">
+        <button class="btn primary" type="button" onclick="exportProgress()">⬇️ Export progress</button>
+        <button class="btn" type="button" onclick="document.getElementById('importFile').click()">⬆️ Import progress</button>
+        <button class="btn danger" type="button" onclick="resetProgress()">↺ Reset all</button>
+        <input type="file" id="importFile" accept="application/json" style="display:none" onchange="importProgress(event)">
+      </div>
+    </div>
   </div>`;
   document.getElementById("content").innerHTML=html;
+}
+
+function exportProgress(){
+  const data=JSON.stringify(state,null,2);
+  const blob=new Blob([data],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download=`dn5-progress-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a);a.click();a.remove();
+  URL.revokeObjectURL(url);
+}
+function importProgress(ev){
+  const file=ev.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const imported=JSON.parse(e.target.result);
+      if(!imported||typeof imported!=="object"||!("tasks"in imported))throw new Error("bad file");
+      state=Object.assign({tasks:{},notes:{},theme:state.theme},imported);
+      saveState();applyTheme();render();
+      alert("✓ Progress imported successfully!");
+    }catch(err){alert("⚠️ Could not import — that doesn't look like a valid DN5 progress file.")}
+  };
+  reader.readAsText(file);
+  ev.target.value="";
+}
+function resetProgress(){
+  if(!confirm("Reset ALL progress and notes? This cannot be undone."))return;
+  const theme=state.theme;
+  state={tasks:{},notes:{},lastUpdated:null,theme};
+  saveState();render();
 }
 
 function resolveAssetPath(filePath){
@@ -928,10 +1189,71 @@ function renderInfo(){
 
 function toggleTask(id){
   if(!state.tasks[id]) state.tasks[id]={completed:false};
-  state.tasks[id].completed=!state.tasks[id].completed;
+  const wasDone=state.tasks[id].completed;
+  // figure out which module this task belongs to (for module-complete detection)
+  const mod=MODULES.find(m=>m.tasks.some(t=>t.id===id));
+  const beforeAll=taskDoneCount();
+  state.tasks[id].completed=!wasDone;
   if(state.tasks[id].completed) state.tasks[id].completedAt=new Date().toISOString();
   saveState();
+  // celebrate only on completion (not un-checking)
+  if(!wasDone && state.tasks[id].completed){
+    const allNow=taskDoneCount();
+    const moduleNowDone=mod && moduleDoneCount(mod)===mod.tasks.length;
+    if(allNow===totalTasks()) fireConfetti(280);      // whole program
+    else if(moduleNowDone) fireConfetti(140);          // module complete
+    else fireConfetti(60);                              // single task
+  }
   render();
+}
+
+// ---- lightweight canvas confetti (no library) ----
+function fireConfetti(count){
+  count=count||60;
+  let c=document.getElementById("confettiCanvas");
+  if(!c){
+    c=document.createElement("canvas");c.id="confettiCanvas";
+    c.style.cssText="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:999";
+    document.body.appendChild(c);
+  }
+  c.width=window.innerWidth;c.height=window.innerHeight;
+  const ctx=c.getContext("2d");
+  const colors=["#2563eb","#3b82f6","#16a34a","#f59e0b","#ec4899","#8b5cf6","#06b6d4"];
+  const parts=[];
+  for(let i=0;i<count;i++){
+    parts.push({
+      x:window.innerWidth/2+(Math.random()-0.5)*220,
+      y:window.innerHeight*0.32,
+      vx:(Math.random()-0.5)*11,
+      vy:Math.random()*-13-4,
+      g:0.32+Math.random()*0.12,
+      size:5+Math.random()*7,
+      color:colors[i%colors.length],
+      rot:Math.random()*6.28,
+      vr:(Math.random()-0.5)*0.35,
+      life:0,max:90+Math.random()*40,
+      shape:Math.random()>0.5?"rect":"circle"
+    });
+  }
+  function frame(){
+    ctx.clearRect(0,0,c.width,c.height);
+    let alive=false;
+    for(const p of parts){
+      if(p.life>p.max)continue;
+      alive=true;
+      p.life++;p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.vx*=0.99;p.rot+=p.vr;
+      ctx.globalAlpha=Math.max(0,1-p.life/p.max);
+      ctx.fillStyle=p.color;
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+      if(p.shape==="rect")ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.6);
+      else{ctx.beginPath();ctx.arc(0,0,p.size/2,0,6.28);ctx.fill();}
+      ctx.restore();
+    }
+    ctx.globalAlpha=1;
+    if(alive)requestAnimationFrame(frame);
+    else ctx.clearRect(0,0,c.width,c.height);
+  }
+  requestAnimationFrame(frame);
 }
 
 function switchTab(ev,tabName){
@@ -979,12 +1301,33 @@ function toggleSidebar(force){
   scrim.classList.toggle("show",open);
 }
 
+function applyTheme(){
+  const dark=state.theme==="dark";
+  document.documentElement.classList.toggle("dark",dark);
+  const btn=document.getElementById("themeToggle");
+  if(btn)btn.textContent=dark?"☀️":"🌙";
+}
+function toggleTheme(){
+  state.theme=state.theme==="dark"?"light":"dark";
+  saveState();applyTheme();
+}
+
 function init(){
   loadState();
+  // theme: respect saved choice, else OS preference
+  if(!state.theme && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) state.theme="dark";
+  applyTheme();
+  document.getElementById("themeToggle").addEventListener("click",toggleTheme);
   document.getElementById("logoHome").addEventListener("click",()=>{activeModuleId="home";render()});
   document.getElementById("hamburger").addEventListener("click",()=>toggleSidebar());
   document.getElementById("scrim").addEventListener("click",()=>toggleSidebar(false));
   document.getElementById("searchInput").addEventListener("input",renderSidebar);
+  document.getElementById("filterChips").addEventListener("click",e=>{
+    const chip=e.target.closest(".chip");if(!chip)return;
+    sidebarFilter=chip.dataset.filter;
+    document.querySelectorAll("#filterChips .chip").forEach(c=>c.classList.toggle("active",c===chip));
+    renderSidebar();
+  });
   document.getElementById("handbookLink").addEventListener("click",e=>{e.preventDefault();activeModuleId="handbook";render()});
   document.getElementById("filesLink").addEventListener("click",e=>{e.preventDefault();activeModuleId="files";render()});
   document.getElementById("upskillingLink").addEventListener("click",e=>{e.preventDefault();activeModuleId="upskilling";render()});
