@@ -1,0 +1,29 @@
+# OS & IDE
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Node (if using)
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Deployment
+.vercel/
+.netlify/
+dist/
+build/
+
+# Local files
+.env.local
+*.log
+.cache/
+
+# OS backups
+*.tmp
+*.bak
