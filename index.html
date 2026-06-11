@@ -10,187 +10,281 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
---white:#ffffff;--gray-50:#fafafa;--gray-100:#f5f5f5;--gray-200:#eeeeee;--gray-300:#e0e0e0;--gray-400:#bdbdbd;--gray-500:#9e9e9e;--gray-600:#757575;--gray-700:#616161;--gray-800:#424242;--gray-900:#212121;
---accent-primary:#2563eb;--accent-primary-light:#3b82f6;--accent-primary-dark:#1e40af;--accent-success:#16a34a;--accent-warning:#d97706;--accent-danger:#dc2626;
---radius-sm:6px;--radius-md:8px;--radius-lg:12px;--radius-xl:16px;--radius-full:9999px;
---shadow-sm:0 1px 2px rgba(0,0,0,0.05);--shadow-md:0 4px 6px rgba(0,0,0,0.07),0 1px 3px rgba(0,0,0,0.06);--shadow-lg:0 10px 15px rgba(0,0,0,0.08),0 4px 6px rgba(0,0,0,0.05);
---border:1px solid #e0e0e0;--transition:all 0.18s cubic-bezier(0.16,1,0.3,1);
+--white:#ffffff;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;--gray-300:#cbd5e1;--gray-400:#94a3b8;--gray-500:#64748b;--gray-600:#475569;--gray-700:#334155;--gray-800:#1e293b;--gray-900:#0f172a;
+--accent:#2563eb;--accent-light:#3b82f6;--accent-dark:#1d4ed8;--accent-50:#eff6ff;--accent-100:#dbeafe;
+--success:#16a34a;--success-50:#f0fdf4;--warning:#d97706;--warning-50:#fffbeb;--danger:#dc2626;--danger-50:#fef2f2;
+--r-sm:6px;--r-md:10px;--r-lg:14px;--r-xl:20px;--r-full:9999px;
+--sh-sm:0 1px 2px rgba(15,23,42,.04),0 1px 3px rgba(15,23,42,.06);
+--sh-md:0 2px 4px rgba(15,23,42,.04),0 4px 12px rgba(15,23,42,.06);
+--sh-lg:0 8px 24px rgba(15,23,42,.08),0 2px 8px rgba(15,23,42,.04);
+--sh-xl:0 20px 48px rgba(15,23,42,.12),0 4px 12px rgba(15,23,42,.06);
+--border:1px solid var(--gray-200);
+--ease:cubic-bezier(.16,1,.3,1);--t:all .2s var(--ease);
+--header-h:64px;--sidebar-w:280px;
 }
-html{font-size:16px;scroll-behavior:smooth}
-body{font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;background:var(--gray-50);color:var(--gray-900);font-size:14px;line-height:1.6}
-h1{font-size:28px;font-weight:700;letter-spacing:-0.5px}h2{font-size:22px;font-weight:700}h3{font-size:16px;font-weight:600}h4{font-size:13px;font-weight:700}
-a{color:var(--accent-primary);text-decoration:none}a:hover{color:var(--accent-primary-light)}
-textarea{font-family:'Monaco','Courier New',monospace}
+html{font-size:16px;scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;background:var(--gray-50);color:var(--gray-900);font-size:14px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
-.topbar{position:fixed;top:0;left:0;right:0;height:64px;z-index:100;background:var(--white);border-bottom:1px solid #f0f0f0;display:flex;align-items:center;padding:0 28px;gap:32px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
-.logo{display:flex;align-items:center;gap:12px;cursor:pointer;min-width:140px;transition:var(--transition)}
-.logo:hover{opacity:0.8}
-.logo-mark{width:32px;height:32px;background:var(--accent-primary);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:14px}
-.logo-text{display:flex;flex-direction:column;line-height:1.2}
-.logo-text .lt-1{font-weight:700;font-size:13px;color:var(--gray-900)}
-.logo-text .lt-2{font-size:11px;color:var(--gray-500)}
-.topbar-center{flex:1;display:flex;align-items:center;justify-content:center;max-width:280px}
-.tc-progress{height:5px;background:var(--gray-200);border-radius:9999px;overflow:hidden;width:100%;margin-right:14px;flex:1}
-.tc-progress-fill{height:100%;background:var(--accent-primary);width:0;transition:width 0.6s ease-out}
-.tc-caption{font-size:12px;color:var(--gray-600);font-weight:500;white-space:nowrap;min-width:140px}
-.topbar-right{display:flex;align-items:center;gap:16px}
-.progress-ring{width:32px;height:32px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:var(--gray-50);border:2px solid #e8e8e8;color:var(--accent-primary)}
-.progress-ring-circle{fill:none;stroke:var(--gray-200);stroke-width:2;transform:rotate(-90deg);transform-origin:50% 50%}
-.progress-ring-circle.fill{stroke:var(--accent-primary);stroke-dasharray:100.53;stroke-dashoffset:0;transition:stroke-dashoffset 0.6s ease-out}
+/* ambient background blobs (fixed, behind everything) */
+.bg-blobs{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bg-blobs span{position:absolute;border-radius:50%;filter:blur(60px);opacity:.5;will-change:transform}
+.bg-blobs span:nth-child(1){top:-120px;right:-80px;width:420px;height:420px;background:radial-gradient(circle,rgba(59,130,246,.22),transparent 70%);animation:float1 18s ease-in-out infinite}
+.bg-blobs span:nth-child(2){bottom:-140px;left:-100px;width:480px;height:480px;background:radial-gradient(circle,rgba(37,99,235,.16),transparent 70%);animation:float2 22s ease-in-out infinite}
+.bg-blobs span:nth-child(3){top:40%;left:55%;width:320px;height:320px;background:radial-gradient(circle,rgba(99,102,241,.12),transparent 70%);animation:float1 26s ease-in-out infinite reverse}
 
-.hamburger{display:none;background:none;border:none;width:32px;height:32px;border-radius:6px;cursor:pointer;color:var(--gray-900);font-size:18px;transition:var(--transition)}
+h1{font-size:clamp(22px,3vw,30px);font-weight:800;letter-spacing:-.02em;line-height:1.15}
+h2{font-size:20px;font-weight:700;letter-spacing:-.01em}
+h3{font-size:15px;font-weight:700;letter-spacing:-.01em}
+a{color:var(--accent);text-decoration:none;transition:var(--t)}a:hover{color:var(--accent-dark)}
+textarea,input{font-family:inherit}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--gray-300);border-radius:99px;border:2px solid var(--gray-50)}::-webkit-scrollbar-thumb:hover{background:var(--gray-400)}
+
+/* ============ TOPBAR ============ */
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--header-h);z-index:60;background:rgba(255,255,255,.8);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:var(--border);display:flex;align-items:center;padding:0 24px;gap:24px}
+.logo{display:flex;align-items:center;gap:11px;cursor:pointer;transition:var(--t)}
+.logo:hover{opacity:.85}
+.logo-mark{width:38px;height:38px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:14px;box-shadow:0 4px 12px rgba(37,99,235,.3);letter-spacing:-.02em}
+.logo-text{display:flex;flex-direction:column;line-height:1.1}
+.logo-text .lt-1{font-weight:800;font-size:14px;color:var(--gray-900);letter-spacing:-.02em}
+.logo-text .lt-2{font-size:11px;color:var(--gray-500);font-weight:500}
+.topbar-center{flex:1;display:flex;align-items:center;gap:12px;max-width:340px;margin:0 auto}
+.tc-progress{height:8px;background:var(--gray-200);border-radius:99px;overflow:hidden;flex:1}
+.tc-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));border-radius:99px;width:0;transition:width .7s var(--ease)}
+.tc-caption{font-size:12px;color:var(--gray-600);font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.topbar-right{display:flex;align-items:center;gap:14px}
+.progress-ring{width:40px;height:40px;transform:rotate(-90deg)}
+.progress-ring-circle{fill:none;stroke:var(--gray-200);stroke-width:3.5}
+.progress-ring-circle.fill{fill:none;stroke:var(--accent);stroke-width:3.5;stroke-linecap:round;stroke-dasharray:113.1;stroke-dashoffset:113.1;transition:stroke-dashoffset .7s var(--ease)}
+.progress-ring text{transform:rotate(90deg);transform-origin:center;font-size:11px;font-weight:800;fill:var(--accent)}
+.ring-wrap{position:relative;width:40px;height:40px;display:grid;place-items:center}
+.ring-wrap .ring-pct{position:absolute;font-size:10px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums}
+
+.hamburger{display:none;background:none;border:none;width:40px;height:40px;border-radius:10px;cursor:pointer;color:var(--gray-700);font-size:20px;align-items:center;justify-content:center;transition:var(--t)}
 .hamburger:hover{background:var(--gray-100)}
 
-.sidebar{position:fixed;top:60px;left:0;bottom:0;width:260px;z-index:90;background:var(--white);border-right:var(--border);display:flex;flex-direction:column;overflow:hidden;transition:transform 0.25s ease}
-.sidebar-top{padding:16px;border-bottom:var(--border);background:var(--gray-50)}
+/* ============ SIDEBAR ============ */
+.sidebar{position:fixed;top:var(--header-h);left:0;bottom:0;width:var(--sidebar-w);z-index:50;background:var(--white);border-right:var(--border);display:flex;flex-direction:column;transition:transform .28s var(--ease)}
+.sidebar-top{padding:16px 16px 8px}
 .search-box{position:relative}
-.search-box input{width:100%;padding:8px 12px;font-size:13px;border:var(--border);border-radius:var(--radius-md);outline:none}
-.search-box input:focus{border-color:var(--accent-primary);box-shadow:0 0 0 3px rgba(37,99,235,0.1)}
-.sidebar-label{padding:12px 8px 6px;font-size:11px;font-weight:600;text-transform:uppercase;color:var(--gray-500)}
-.module-list{flex:1;overflow-y:auto;padding:6px 8px}
-.mod-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;border-left:3px solid transparent;margin-bottom:2px;font-size:13px;font-weight:500;transition:var(--transition)}
-.mod-item:hover{background:var(--gray-100)}
-.mod-item.active{background:var(--accent-primary);color:var(--white);border-left-color:var(--accent-primary)}
-.mod-dot{width:8px;height:8px;border-radius:50%;background:var(--gray-300);flex-shrink:0}
-.mod-dot.progress{background:var(--accent-primary)}
-.mod-dot.done{background:var(--accent-success)}
-.mod-num{font-size:11px;color:var(--gray-400);font-weight:700;width:18px;flex-shrink:0}
+.search-box::before{content:'🔍';position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:13px;opacity:.5;pointer-events:none}
+.search-box input{width:100%;padding:10px 12px 10px 36px;font-size:13px;border:var(--border);border-radius:var(--r-md);outline:none;background:var(--gray-50);transition:var(--t)}
+.search-box input:focus{border-color:var(--accent);background:var(--white);box-shadow:0 0 0 3px var(--accent-100)}
+.sidebar-label{padding:14px 12px 6px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gray-400)}
+.module-list{flex:1;overflow-y:auto;padding:2px 10px 10px}
+.mod-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:var(--r-md);cursor:pointer;margin-bottom:2px;font-size:13px;font-weight:500;color:var(--gray-700);position:relative;transition:var(--t)}
+.mod-item:hover{background:var(--gray-100);color:var(--gray-900)}
+.mod-item.active{background:var(--accent-50);color:var(--accent-dark);font-weight:600}
+.mod-item.active::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:99px;background:var(--accent)}
+.mod-dot{width:8px;height:8px;border-radius:50%;background:var(--gray-300);flex-shrink:0;transition:var(--t)}
+.mod-dot.progress{background:var(--warning);box-shadow:0 0 0 3px var(--warning-50)}
+.mod-dot.done{background:var(--success);box-shadow:0 0 0 3px var(--success-50)}
+.mod-num{font-size:11px;color:var(--gray-400);font-weight:700;width:18px;flex-shrink:0;font-variant-numeric:tabular-nums}
+.mod-item.active .mod-num{color:var(--accent)}
 .mod-name{font-size:13px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mod-count{font-size:11px;color:var(--gray-500);flex-shrink:0}
+.mod-count{font-size:11px;color:var(--gray-400);flex-shrink:0;font-weight:600;font-variant-numeric:tabular-nums}
+.mod-item.active .mod-count{color:var(--accent)}
 
-.sidebar-bottom{border-top:var(--border);padding:12px 16px;background:var(--gray-50);overflow-y:auto;max-height:180px}
-.sb-section-label{font-size:11px;font-weight:600;text-transform:uppercase;color:var(--gray-500);margin-bottom:8px;display:block}
-.sb-link{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:12px;color:var(--gray-700);font-weight:500;cursor:pointer;transition:var(--transition)}
-.sb-link:hover{color:var(--accent-primary)}
-.sb-link a{color:inherit}
+.sidebar-bottom{border-top:var(--border);padding:12px;background:var(--gray-50)}
+.sb-section-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gray-400);margin-bottom:4px;display:block;padding:0 4px}
+.sb-link{display:flex;align-items:center;gap:10px;padding:8px 10px;font-size:12.5px;color:var(--gray-600);font-weight:500;cursor:pointer;border-radius:var(--r-sm);transition:var(--t)}
+.sb-link:hover{color:var(--accent);background:var(--white)}
 
-.main{margin-left:260px;margin-top:60px;min-height:calc(100vh - 60px);padding:32px}
-.main-inner{max-width:900px;margin:0 auto}
+/* ============ MAIN ============ */
+.main{margin-left:var(--sidebar-w);margin-top:var(--header-h);min-height:calc(100vh - var(--header-h));padding:36px 40px 80px;position:relative;z-index:1}
+.main-inner{max-width:1080px;margin:0 auto}
+.page{animation:fadeIn .35s var(--ease)}
 
-.page{animation:fadeIn 0.3s ease}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--gray-500);font-weight:500;margin-bottom:18px;cursor:pointer;transition:var(--t)}
+.back-link:hover{color:var(--accent);gap:9px}
 
-.hero{margin-bottom:32px}
+.hero{margin-bottom:28px}
 .hero h1{margin-bottom:8px}
-.hero .subtext{color:var(--gray-600);font-size:14px}
+.hero .subtext{color:var(--gray-500);font-size:14px;max-width:760px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
-.stat-card{background:var(--white);border:var(--border);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition)}
-.stat-card:hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
-.stat-num{font-size:36px;font-weight:800;line-height:1;margin-bottom:8px}
-.stat-num.green{color:var(--accent-success)}
-.stat-num.amber{color:var(--accent-warning)}
-.stat-num.gray{color:var(--gray-500)}
-.stat-label{color:var(--gray-600);font-size:12px;font-weight:500}
+/* ============ STAT CARDS ============ */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat-card{background:var(--white);border:var(--border);border-radius:var(--r-lg);padding:22px;box-shadow:var(--sh-sm);transition:var(--t);position:relative;overflow:hidden}
+.stat-card::after{content:'';position:absolute;inset:0;border-radius:var(--r-lg);box-shadow:inset 0 0 0 1px transparent;transition:var(--t)}
+.stat-card:hover{transform:translateY(-3px);box-shadow:var(--sh-lg)}
+.stat-num{font-size:38px;font-weight:800;line-height:1;margin-bottom:8px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.stat-num.green{color:var(--success)}.stat-num.amber{color:var(--warning)}.stat-num.gray{color:var(--gray-400)}
+.stat-label{color:var(--gray-500);font-size:12.5px;font-weight:600}
 
-.panel{background:var(--white);border:var(--border);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-sm);margin-bottom:24px}
-.panel h3{margin-bottom:16px}
+/* ============ PANELS ============ */
+.panel{background:var(--white);border:var(--border);border-radius:var(--r-lg);padding:26px;box-shadow:var(--sh-sm);margin-bottom:22px}
+.panel h3{margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.panel-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 
-.progress-section{background:var(--white);border:var(--border);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-sm);margin-bottom:24px}
-.progress-section h3{margin-bottom:16px}
-.progress-track{height:12px;background:var(--gray-200);border-radius:var(--radius-full);overflow:hidden;margin-bottom:12px}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent-primary),var(--accent-primary-light));transition:width 0.6s ease-out}
-.progress-text{display:flex;justify-content:space-between;font-size:13px;color:var(--gray-600);font-weight:500;margin-bottom:24px}
+.progress-track{height:14px;background:var(--gray-100);border-radius:99px;overflow:hidden;margin-bottom:12px;box-shadow:inset 0 1px 2px rgba(15,23,42,.06)}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));border-radius:99px;transition:width .7s var(--ease)}
+.progress-text{display:flex;justify-content:space-between;font-size:13px;color:var(--gray-500);font-weight:600;margin-bottom:22px;font-variant-numeric:tabular-nums}
 
-.mini-progress{margin-bottom:16px;padding:12px;background:var(--gray-50);border-radius:var(--radius-md)}
-.mini-progress-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;font-weight:500}
-.mini-progress-label-name{color:var(--gray-900)}
-.mini-progress-label-pct{color:var(--gray-600)}
-.mini-progress-bar{height:4px;background:var(--gray-200);border-radius:var(--radius-full);overflow:hidden}
-.mini-progress-bar-fill{height:100%;background:var(--accent-primary);transition:width 0.4s ease-out}
+.mini-progress{margin-bottom:14px}
+.mini-progress:last-child{margin-bottom:0}
+.mini-progress-label{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:6px;font-weight:500;gap:12px}
+.mini-progress-label-name{color:var(--gray-700);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mini-progress-label-pct{color:var(--gray-400);font-weight:600;flex-shrink:0;font-variant-numeric:tabular-nums}
+.mini-progress-bar{height:6px;background:var(--gray-100);border-radius:99px;overflow:hidden}
+.mini-progress-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent-light));transition:width .6s var(--ease)}
+.mini-progress-bar-fill.done{background:linear-gradient(90deg,var(--success),#22c55e)}
 
-.roadmap-table{width:100%;border-collapse:collapse;font-size:13px}
-.roadmap-table th{text-align:left;padding:12px;border-bottom:var(--border);font-weight:600;color:var(--gray-700);background:var(--gray-50)}
-.roadmap-table td{padding:12px;border-bottom:var(--border);color:var(--gray-800)}
-.roadmap-status{display:inline-block}
-.badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:var(--radius-full);text-transform:uppercase;letter-spacing:0.5px}
-.badge.green{background:rgba(22,163,74,0.12);color:var(--accent-success)}
-.badge.blue{background:rgba(37,99,235,0.12);color:var(--accent-primary)}
-.badge.gray{background:rgba(128,128,128,0.12);color:var(--gray-600)}
-.badge.red{background:rgba(220,38,38,0.12);color:var(--accent-danger)}
+/* ============ TABLE ============ */
+.table-wrap{overflow-x:auto;margin:0 -6px}
+.roadmap-table{width:100%;border-collapse:collapse;font-size:13px;min-width:560px}
+.roadmap-table th{text-align:left;padding:12px 14px;border-bottom:2px solid var(--gray-100);font-weight:700;color:var(--gray-500);font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+.roadmap-table td{padding:13px 14px;border-bottom:var(--border);color:var(--gray-700)}
+.roadmap-table tr:last-child td{border-bottom:none}
+.roadmap-table tbody tr{transition:var(--t)}
+.roadmap-table tbody tr:hover{background:var(--gray-50)}
 
-.tabs{display:flex;gap:0;border-bottom:var(--border);margin-bottom:24px}
-.tab{padding:12px 18px;font-size:13px;font-weight:600;color:var(--gray-600);background:none;border:none;border-bottom:3px solid transparent;margin-bottom:-1px;cursor:pointer;text-transform:uppercase;letter-spacing:0.5px;transition:var(--transition)}
-.tab:hover{color:var(--gray-900)}
-.tab.active{color:var(--accent-primary);border-bottom-color:var(--accent-primary)}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;padding:5px 11px;border-radius:99px;letter-spacing:.03em;white-space:nowrap}
+.badge.green{background:var(--success-50);color:var(--success)}
+.badge.blue{background:var(--accent-50);color:var(--accent)}
+.badge.gray{background:var(--gray-100);color:var(--gray-500)}
+.badge.red{background:var(--danger-50);color:var(--danger)}
+.badge.amber{background:var(--warning-50);color:var(--warning)}
 
+/* ============ TABS ============ */
+.tabs{display:flex;gap:4px;padding:4px;background:var(--gray-100);border-radius:var(--r-md);margin-bottom:24px;width:fit-content;max-width:100%;overflow-x:auto}
+.tab{padding:9px 18px;font-size:13px;font-weight:600;color:var(--gray-500);background:none;border:none;border-radius:var(--r-sm);cursor:pointer;white-space:nowrap;transition:var(--t)}
+.tab:hover{color:var(--gray-800)}
+.tab.active{color:var(--accent-dark);background:var(--white);box-shadow:var(--sh-sm)}
 .tab-content{display:none}
-.tab-content.active{display:block;animation:fadeIn 0.2s ease}
+.tab-content.active{display:block;animation:fadeIn .25s var(--ease)}
 
-.task-card{background:var(--white);border:var(--border);border-radius:var(--radius-lg);padding:16px;margin-bottom:12px;transition:var(--transition);display:flex;align-items:flex-start;gap:12px}
-.task-card:hover{border-color:var(--accent-primary);box-shadow:var(--shadow-md)}
-.task-checkbox{width:20px;height:20px;border:2px solid var(--gray-300);border-radius:4px;display:flex;align-items:center;justify-content:center;transition:var(--transition);flex-shrink:0;font-size:12px;font-weight:700;cursor:pointer;margin-top:2px}
-.task-checkbox:hover{border-color:var(--accent-primary)}
-.task-checkbox.checked{background:var(--accent-success);border-color:var(--accent-success);color:white;animation:checkBounce 0.4s ease}
-.task-info{flex:1}
-.task-title{font-weight:600;color:var(--gray-900);margin-bottom:4px}
-.task-meta{font-size:12px;color:var(--gray-500)}
-.task-meta span{margin-right:12px}
+/* ============ TASK CARDS ============ */
+.task-card{background:var(--white);border:var(--border);border-radius:var(--r-lg);padding:16px 18px;margin-bottom:12px;transition:var(--t);display:flex;align-items:center;gap:14px}
+.task-card:hover{border-color:var(--accent-light);box-shadow:var(--sh-md);transform:translateY(-1px)}
+.task-checkbox{width:24px;height:24px;border:2px solid var(--gray-300);border-radius:7px;display:flex;align-items:center;justify-content:center;transition:var(--t);flex-shrink:0;font-size:13px;font-weight:700;cursor:pointer}
+.task-checkbox:hover{border-color:var(--accent);background:var(--accent-50)}
+.task-checkbox.checked{background:var(--success);border-color:var(--success);color:#fff;animation:pop .4s var(--ease)}
+.task-info{flex:1;min-width:0}
+.task-title{font-weight:600;color:var(--gray-900);margin-bottom:3px;font-size:14px}
+.task-meta{font-size:12px;color:var(--gray-400);display:flex;flex-wrap:wrap;gap:12px}
+.task-meta span{display:inline-flex;align-items:center;gap:4px}
+.task-chevron{color:var(--gray-300);font-size:18px;flex-shrink:0;transition:var(--t)}
+.task-card:hover .task-chevron{color:var(--accent);transform:translateX(2px)}
 
-.objectives-list{list-style:none;display:grid;grid-template-columns:1fr;gap:8px}
-.objectives-list li{padding:8px 0;padding-left:24px;position:relative;font-size:13px;color:var(--gray-800)}
-.objectives-list li::before{content:'✓';position:absolute;left:0;color:var(--accent-primary);font-weight:700}
+.objectives-list{list-style:none;display:grid;gap:10px}
+.objectives-list li{padding-left:28px;position:relative;font-size:13.5px;color:var(--gray-700);line-height:1.5}
+.objectives-list li::before{content:'';position:absolute;left:0;top:3px;width:18px;height:18px;border-radius:50%;background:var(--accent-50) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/12px no-repeat}
 
-.concepts-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
-.concept-card{background:var(--gray-50);border:var(--border);border-radius:var(--radius-md);padding:12px}
-.concept-title{font-weight:600;color:var(--gray-900);font-size:13px;margin-bottom:4px}
-.concept-desc{font-size:12px;color:var(--gray-600);line-height:1.4}
+.concepts-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.concept-card{background:var(--gray-50);border:var(--border);border-radius:var(--r-md);padding:14px 16px;transition:var(--t)}
+.concept-card:hover{border-color:var(--accent-light);background:var(--accent-50)}
+.concept-title{font-weight:700;color:var(--gray-900);font-size:13px;margin-bottom:4px}
+.concept-desc{font-size:12px;color:var(--gray-500);line-height:1.5}
 
-.resource-section{margin-bottom:24px}
-.resource-section h4{margin-bottom:12px;color:var(--gray-900)}
 .resource-list{list-style:none;display:grid;gap:8px}
-.resource-item{display:flex;align-items:flex-start;gap:10px;padding:10px;background:var(--gray-50);border-radius:var(--radius-md);transition:var(--transition)}
-.resource-item:hover{background:var(--gray-100)}
-.resource-item a{flex:1;color:var(--accent-primary);font-weight:500;font-size:13px;transition:var(--transition)}
-.resource-item a:hover{color:var(--accent-primary-dark)}
-.resource-domain{font-size:11px;color:var(--gray-500);flex-shrink:0}
+.resource-item{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--gray-50);border:var(--border);border-radius:var(--r-md);transition:var(--t)}
+.resource-item:hover{border-color:var(--accent-light);background:var(--white);box-shadow:var(--sh-sm)}
+.resource-item a{flex:1;color:var(--gray-800);font-weight:600;font-size:13px}
+.resource-item:hover a{color:var(--accent)}
+.resource-domain{font-size:11px;color:var(--gray-400);flex-shrink:0}
 
 .file-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.file-card{background:var(--gray-50);border:var(--border);border-radius:var(--radius-md);padding:12px;display:flex;align-items:center;gap:10px;transition:var(--transition)}
-.file-card:hover{border-color:var(--accent-primary);background:var(--white)}
-.file-icon{font-size:18px;flex-shrink:0}
+.file-card{background:var(--gray-50);border:var(--border);border-radius:var(--r-md);padding:14px;display:flex;align-items:center;gap:12px;transition:var(--t)}
+.file-card:hover{border-color:var(--accent-light);background:var(--white);box-shadow:var(--sh-sm)}
+.file-icon{width:38px;height:38px;border-radius:9px;background:var(--accent-50);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
 .file-info{flex:1;min-width:0}
-.file-name{font-size:12px;font-weight:600;color:var(--gray-900);word-break:break-word}
-.file-type{font-size:11px;color:var(--gray-500)}
+.file-name{font-size:13px;font-weight:600;color:var(--gray-900);word-break:break-word;line-height:1.3}
+.file-type{font-size:11px;color:var(--gray-400);font-weight:600;margin-top:2px}
+.file-actions{display:flex;gap:7px;flex-shrink:0}
 
-.btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:6px 12px;border-radius:var(--radius-md);border:var(--border);background:var(--white);color:var(--gray-800);cursor:pointer;transition:var(--transition);text-decoration:none}
-.btn:hover{background:var(--gray-50);border-color:var(--gray-400)}
-.btn.primary{background:var(--accent-primary);color:#fff;border-color:var(--accent-primary)}
-.btn.primary:hover{background:var(--accent-primary-dark)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;font-weight:600;padding:7px 14px;border-radius:var(--r-sm);border:var(--border);background:var(--white);color:var(--gray-700);cursor:pointer;transition:var(--t);text-decoration:none;white-space:nowrap}
+.btn:hover{background:var(--gray-50);border-color:var(--gray-300);color:var(--gray-900)}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.primary:hover{background:var(--accent-dark);border-color:var(--accent-dark);color:#fff;box-shadow:0 4px 12px rgba(37,99,235,.25)}
 
-.notes-area{width:100%;min-height:300px;padding:12px;border:var(--border);border-radius:var(--radius-md);background:var(--gray-100);color:var(--gray-900);font-size:13px;resize:vertical;outline:none;transition:var(--transition)}
-.notes-area:focus{border-color:var(--accent-primary);box-shadow:0 0 0 3px rgba(37,99,235,0.1)}
-.notes-footer{display:flex;justify-content:space-between;font-size:11px;color:var(--gray-500);margin-top:8px}
+.notes-area{width:100%;min-height:320px;padding:16px;border:var(--border);border-radius:var(--r-md);background:var(--gray-50);color:var(--gray-900);font-size:13px;line-height:1.7;resize:vertical;outline:none;font-family:'SF Mono','Monaco','Courier New',monospace;transition:var(--t)}
+.notes-area:focus{border-color:var(--accent);background:var(--white);box-shadow:0 0 0 3px var(--accent-100)}
+.notes-footer{display:flex;justify-content:space-between;font-size:11.5px;color:var(--gray-400);margin-top:10px;font-weight:500}
 
-.tool-card{background:var(--white);border:var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;text-align:center;transition:var(--transition)}
-.tool-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
-.tool-icon{font-size:32px;margin-bottom:12px}
-.tool-title{font-weight:600;color:var(--gray-900);margin-bottom:8px}
-.tool-desc{font-size:12px;color:var(--gray-600);line-height:1.6}
+.tool-card{background:var(--white);border:var(--border);border-radius:var(--r-lg);text-align:center;padding:24px 18px;transition:var(--t)}
+.tool-card:hover{transform:translateY(-3px);box-shadow:var(--sh-lg);border-color:var(--accent-light)}
+.tool-icon{width:56px;height:56px;margin:0 auto 14px;border-radius:14px;background:var(--accent-50);display:flex;align-items:center;justify-content:center;font-size:28px}
+.tool-title{font-weight:700;color:var(--gray-900);margin-bottom:8px;font-size:14px}
+.tool-desc{font-size:12px;color:var(--gray-500);line-height:1.6}
 
-.activity-feed{list-style:none}
-.activity-item{padding:12px;background:var(--gray-50);border-left:3px solid var(--accent-primary);border-radius:var(--radius-md);margin-bottom:8px}
-.activity-task{font-weight:600;color:var(--gray-900);font-size:13px}
-.activity-time{font-size:11px;color:var(--gray-500);margin-top:4px}
+.activity-feed{list-style:none;display:grid;gap:8px}
+.activity-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;background:var(--success-50);border:1px solid #bbf7d0;border-radius:var(--r-md)}
+.activity-task{font-weight:600;color:var(--gray-800);font-size:13px}
+.activity-time{font-size:11.5px;color:var(--gray-500);flex-shrink:0;font-weight:500}
 
-.empty-state{text-align:center;padding:40px 20px;color:var(--gray-500);font-size:13px}
+.empty-state{text-align:center;padding:44px 20px;color:var(--gray-400);font-size:13px}
 
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@keyframes checkBounce{0%{transform:scale(1)}50%{transform:scale(0.85)}100%{transform:scale(1)}}
-@keyframes progressFill{from{width:0%}to{width:var(--target-width,100%)}}
+/* ============ MODAL ============ */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;z-index:200;align-items:flex-end;justify-content:center;padding:0}
+.modal-overlay.active{display:flex;animation:fadeIn .2s var(--ease)}
+.modal-card{background:var(--white);border-radius:var(--r-xl) var(--r-xl) 0 0;max-width:680px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:var(--sh-xl);animation:slideUp .32s var(--ease)}
+.modal-header{padding:24px 26px;border-bottom:var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:16px;position:sticky;top:0;background:var(--white);z-index:2;border-radius:var(--r-xl) var(--r-xl) 0 0}
+.modal-title{font-size:19px;font-weight:800;color:var(--gray-900);letter-spacing:-.01em;line-height:1.3}
+.modal-close{background:var(--gray-100);border:none;font-size:18px;cursor:pointer;color:var(--gray-500);width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--t)}
+.modal-close:hover{background:var(--gray-200);color:var(--gray-900)}
+.modal-body{padding:24px 26px;display:flex;flex-direction:column;gap:22px}
+.task-section{display:flex;flex-direction:column;gap:9px}
+.task-section-title{font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent);display:flex;align-items:center;gap:7px}
+.task-section-content{color:var(--gray-700);font-size:13.5px;line-height:1.7}
+.steps-list{list-style:none;display:flex;flex-direction:column;gap:8px;counter-reset:step}
+.steps-list li{display:flex;gap:12px;padding:12px 14px;background:var(--gray-50);border:var(--border);border-radius:var(--r-md);font-size:13px;color:var(--gray-700);line-height:1.5;counter-increment:step}
+.steps-list li::before{content:counter(step);flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.modal-files{display:flex;flex-direction:column;gap:10px}
+.modal-footer{padding:18px 26px;border-top:var(--border);display:flex;gap:12px;justify-content:flex-end;position:sticky;bottom:0;background:var(--white)}
+.task-complete-btn{background:var(--success);color:#fff;border:none;padding:11px 22px;border-radius:var(--r-md);font-weight:700;font-size:13.5px;cursor:pointer;transition:var(--t)}
+.task-complete-btn:hover{background:#15803d;box-shadow:0 4px 12px rgba(22,163,74,.3)}
+.task-complete-btn.completed{background:var(--gray-300);color:var(--gray-600);cursor:default}
+.task-complete-btn.completed:hover{box-shadow:none}
 
-@media(max-width:1280px){.stat-grid{grid-template-columns:repeat(2,1fr)}.concepts-grid{grid-template-columns:1fr}.file-grid{grid-template-columns:1fr}}
-@media(max-width:768px){:root{--sidebar-w:0px}.hamburger{display:flex}.sidebar{position:fixed;top:60px;left:0;width:100%;height:calc(100vh - 60px);transform:translateX(-100%);z-index:95}.sidebar.open{transform:translateX(0)}.main{margin-left:0;padding:16px}.main-inner{padding:0}.stat-grid{grid-template-columns:1fr}.concepts-grid{grid-template-columns:1fr}.file-grid{grid-template-columns:1fr}.tool-card{padding:16px}.topbar{padding:0 16px}.topbar-center{max-width:200px}.roadmap-table{font-size:11px}.roadmap-table th,.roadmap-table td{padding:8px}}
+/* ============ ANIMATIONS ============ */
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{transform:translateY(40px);opacity:.4}to{transform:translateY(0);opacity:1}}
+@keyframes pop{0%{transform:scale(1)}45%{transform:scale(.8)}100%{transform:scale(1)}}
+@keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,30px) scale(1.08)}}
+@keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-40px,-30px) scale(1.06)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:1100px){.stat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:980px){
+  :root{--sidebar-w:0px}
+  .hamburger{display:flex}
+  .sidebar{transform:translateX(-100%);width:300px;box-shadow:var(--sh-xl)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0;padding:28px 24px 80px}
+  .scrim{position:fixed;inset:var(--header-h) 0 0;background:rgba(15,23,42,.4);z-index:45;opacity:0;visibility:hidden;transition:var(--t)}
+  .scrim.show{opacity:1;visibility:visible}
+}
+@media(max-width:680px){
+  .topbar{padding:0 14px;gap:12px}
+  .topbar-center{display:none}
+  .logo-text{display:none}
+  .concepts-grid,.file-grid,.panel-grid-3{grid-template-columns:1fr}
+  .main{padding:22px 16px 64px}
+  .panel{padding:20px 18px}
+  .stat-card{padding:18px}
+  .stat-num{font-size:32px}
+  .file-card{flex-wrap:wrap}
+  .file-actions{width:100%}
+  .file-actions .btn{flex:1}
+  .modal-card{max-height:90vh}
+  .tabs{width:100%}
+  .tab{flex:1;text-align:center;padding:9px 10px}
+}
+@media(max-width:420px){.stat-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
+<div class="bg-blobs" aria-hidden="true"><span></span><span></span><span></span></div>
+
 <header class="topbar">
-  <button class="hamburger" id="hamburger">☰</button>
+  <button class="hamburger" id="hamburger" type="button" aria-label="Toggle menu">☰</button>
   <div class="logo" id="logoHome">
     <div class="logo-mark">DN</div>
     <div class="logo-text">
       <span class="lt-1">DN 5.0</span>
-      <span class="lt-2">Learning</span>
+      <span class="lt-2">DotNet FSE</span>
     </div>
   </div>
   <div class="topbar-center">
@@ -198,11 +292,13 @@ textarea{font-family:'Monaco','Courier New',monospace}
     <div class="tc-caption" id="progressCaption">0 of 23</div>
   </div>
   <div class="topbar-right">
-    <svg class="progress-ring" viewBox="0 0 36 36">
-      <circle class="progress-ring-circle" cx="18" cy="18" r="18"></circle>
-      <circle class="progress-ring-circle fill" id="progressRing" cx="18" cy="18" r="18"></circle>
-      <text x="18" y="21" text-anchor="middle" id="progressPercent" style="font-size:10px;fill:var(--accent-primary)">0%</text>
-    </svg>
+    <div class="ring-wrap">
+      <svg class="progress-ring" viewBox="0 0 40 40">
+        <circle class="progress-ring-circle" cx="20" cy="20" r="18"></circle>
+        <circle class="progress-ring-circle fill" id="progressRing" cx="20" cy="20" r="18"></circle>
+      </svg>
+      <span class="ring-pct" id="progressPercent">0%</span>
+    </div>
   </div>
 </header>
 
@@ -217,17 +313,48 @@ textarea{font-family:'Monaco','Courier New',monospace}
   <div class="sidebar-bottom">
     <span class="sb-section-label">Resources</span>
     <a class="sb-link" id="filesLink" href="#">📁 All Files</a>
+    <a class="sb-link" id="upskillingLink" href="#">📄 Upskilling PDFs</a>
     <a class="sb-link" href="https://learn.microsoft.com/" target="_blank" rel="noopener">📚 MS Learn</a>
     <a class="sb-link" href="https://docs.microsoft.com/en-us/dotnet/" target="_blank" rel="noopener">📖 .NET Docs</a>
-    <a class="sb-link" id="upskillingLink" href="#">📄 Upskilling PDFs</a>
-    <span class="sb-section-label" style="margin-top:12px">Info</span>
     <a class="sb-link" id="infoLink" href="#">ℹ️ Program Info</a>
   </div>
 </aside>
 
+<div class="scrim" id="scrim"></div>
+
 <main class="main">
   <div class="main-inner" id="content"></div>
 </main>
+
+<div class="modal-overlay" id="taskModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTaskTitle"></div>
+      <button class="modal-close" type="button" onclick="closeTaskModal()" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="task-section">
+        <div class="task-section-title">📌 What you'll do</div>
+        <div class="task-section-content" id="modalTaskWhat"></div>
+      </div>
+      <div class="task-section">
+        <div class="task-section-title">💡 Why it matters</div>
+        <div class="task-section-content" id="modalTaskWhy"></div>
+      </div>
+      <div class="task-section">
+        <div class="task-section-title">🎯 How to do it</div>
+        <ul class="steps-list" id="modalTaskSteps"></ul>
+      </div>
+      <div class="task-section">
+        <div class="task-section-title">📄 Related files</div>
+        <div class="modal-files" id="modalTaskFiles"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="task-complete-btn" type="button" id="modalCompleteBtn" onclick="completeTaskFromModal()">Mark as complete</button>
+    </div>
+  </div>
+</div>
 
 <script>
 "use strict";
@@ -243,16 +370,16 @@ const ROADMAP_DATA = [
 ];
 
 const MODULES = [
-  {id:"m1", num:1, name:"Design Patterns & Principles", week:1, time:"2 days", tool:"Visual Studio Community", overview:"This module introduces learners to essential design principles and patterns crucial for creating robust and maintainable software. Covers SOLID principles (SRP, OCP, LSP, ISP, DIP) and common design patterns including Creational, Structural, and Behavioral patterns.", objectives:["Grasp the importance of the Single Responsibility Principle (SRP)","Implement the Open/Closed Principle (OCP) to create extendable software","Ensure software components adhere to the Liskov Substitution Principle (LSP)","Design interfaces following the Interface Segregation Principle (ISP)","Apply the Dependency Inversion Principle (DIP) for flexible dependency management","Recognize and apply Creational Patterns (Singleton, Factory, Builder)","Utilize Structural Patterns (Adapter, Decorator, Proxy)","Employ Behavioral Patterns (Observer, Strategy, Command)"], concepts:[{name:"SOLID Principles",desc:"Five design principles for writing maintainable software"},{name:"Singleton Pattern",desc:"Ensure a class has only one instance"},{name:"Factory Pattern",desc:"Create objects without specifying exact classes"},{name:"Adapter Pattern",desc:"Make incompatible interfaces compatible"}], tasks:[{id:"m1_t1",name:"Implementing the Singleton Pattern",file:"Design Patterns and Principles.docx",folder:"Engineering concepts"},{id:"m1_t2",name:"Implementing the Factory Method Pattern",file:"Design Patterns and Principles.docx",folder:"Engineering concepts"}], files:[{name:"Design Patterns and Principles.docx",type:"docx",path:"./DotNet FSE/Deepskilling/Engineering concepts/Design Patterns and Principles.docx"}], resources:[{label:"SOLID Principles Guide",url:"https://www.baeldung.com/solid-principles"},{label:"Design Patterns Reference",url:"https://medium.com/@softwaretechsolution/design-pattern-81ef65829de2"},{label:"Refactoring.Guru Patterns",url:"https://refactoring.guru/design-patterns/csharp"}]},
-  {id:"m2", num:2, name:"Data Structures & Algorithms", week:1, time:"2 days", tool:"Visual Studio Community", overview:"Focuses on core data structures and algorithms foundational for writing efficient and scalable code. Covers arrays, linked lists, searching (linear, binary) and sorting (bubble, quick, merge) algorithms.", objectives:["Choose appropriate data structures based on problem requirements","Apply searching algorithms to find elements in data structures","Utilize sorting algorithms to order data efficiently","Solve coding problems using appropriate data structures and algorithms","Analyze algorithmic complexities to optimize performance"], concepts:[{name:"Arrays & Lists",desc:"Linear data structures for storing collections"},{name:"Sorting Algorithms",desc:"QuickSort, MergeSort, and Bubble Sort techniques"},{name:"Searching Algorithms",desc:"Binary and linear search methods"},{name:"Complexity Analysis",desc:"Big O notation and time/space analysis"}], tasks:[{id:"m2_t1",name:"E-commerce Platform Search Function",file:"Algorithms_Data Structures.docx",folder:"Engineering concepts"},{id:"m2_t2",name:"Financial Forecasting",file:"Algorithms_Data Structures.docx",folder:"Engineering concepts"}], files:[{name:"Algorithms_Data Structures.docx",type:"docx",path:"./DotNet FSE/Deepskilling/Engineering concepts/Algorithms_Data Structures.docx"}], resources:[{label:"Algorithm Analysis",url:"https://www.geeksforgeeks.org/design-and-analysis-of-algorithms/"},{label:"Sorting Algorithms",url:"https://www.geeksforgeeks.org/sorting-algorithms/"},{label:"Array Guide",url:"https://www.geeksforgeeks.org/array-data-structure-guide/"}]},
-  {id:"m3", num:3, name:"Advanced SQL", week:2, time:"2 days", tool:"SSMS", overview:"Covers advanced SQL Server topics including window functions, CTEs, stored procedures, triggers, cursors, exception handling, and transactions.", objectives:["Write advanced SQL queries using window functions and CTEs","Create and manage stored procedures and user-defined functions","Implement triggers and understand cursor usage","Handle exceptions using TRY/CATCH","Manage transactions with ACID properties"], concepts:[{name:"Window Functions",desc:"ROW_NUMBER, RANK, DENSE_RANK, LAG, LEAD"},{name:"CTEs",desc:"Common Table Expressions for complex queries"},{name:"Stored Procedures",desc:"Create reusable SQL procedures with parameters"},{name:"Triggers",desc:"Automate actions on table modifications"}], tasks:[{id:"m3_t1",name:"Ranking and Window Functions",file:"1. SQL Exercise - Advanced concepts.pdf",folder:"Advanced SQL server"},{id:"m3_t2",name:"Create a Stored Procedure",file:"4. SQL Exercise - Stored procedure.pdf",folder:"Advanced SQL server"},{id:"m3_t3",name:"Return Data from a Stored Procedure",file:"5. SQL Exercise - Functions.pdf",folder:"Advanced SQL server"}], files:[{name:"1. SQL Exercise - Advanced concepts.pdf",type:"pdf",path:"./DotNet FSE/Deepskilling/Advanced SQL server/1. SQL Exercise - Advanced concepts.pdf"},{name:"2. SQL Exercise - Index.sql",type:"sql",path:"./DotNet FSE/Deepskilling/Advanced SQL server/2. SQL Exercise - Index.sql"},{name:"3. SQL Exercise - Views.pdf",type:"pdf",path:"./DotNet FSE/Deepskilling/Advanced SQL server/3. SQL Exercise - Views.pdf"},{name:"4. SQL Exercise - Stored procedure.pdf",type:"pdf",path:"./DotNet FSE/Deepskilling/Advanced SQL server/4. SQL Exercise - Stored procedure.pdf"},{name:"5. SQL Exercise - Functions.pdf",type:"pdf",path:"./DotNet FSE/Deepskilling/Advanced SQL server/5. SQL Exercise - Functions.pdf"},{name:"6. SQL Exercise - Triggers.pdf",type:"pdf",path:"./DotNet FSE/Deepskilling/Advanced SQL server/6. SQL Exercise - Triggers.pdf"},{name:"7. SQL Exercise - Cursors.pdf",type:"pdf",path:"./DotNet FSE/Deepskilling/Advanced SQL server/7. SQL Exercise - Cursors.pdf"},{name:"8. SQL Exercise - Exception handling.pdf",type:"pdf",path:"./DotNet FSE/Deepskilling/Advanced SQL server/8. SQL Exercise - Exception handling.pdf"}], resources:[{label:"Window Functions",url:"https://www.sqlservertutorial.net/sql-server-window-functions/"},{label:"SQL Basics",url:"https://www.sqlservertutorial.net/sql-server-basics/"},{label:"Stored Procedures",url:"https://www.sqlservertutorial.net/sql-server-stored-procedures/"}]},
-  {id:"m4", num:4, name:"NUnit and Moq", week:2, time:"1 day", tool:"Visual Studio Community", overview:"Focuses on unit testing using Microsoft .NET's NUnit framework and Moq mocking library. Covers test-driven development and writing testable code.", objectives:["Explain automated testing and its benefits","Demonstrate unit testing concepts using NUnit framework","Use Moq framework to mock dependencies in unit tests"], concepts:[{name:"Unit Testing",desc:"Test individual units of code in isolation"},{name:"AAA Pattern",desc:"Arrange, Act, Assert testing methodology"},{name:"Mocking",desc:"Create mock objects to isolate dependencies"},{name:"TDD",desc:"Test-Driven Development workflow"}], tasks:[{id:"m4_t1",name:"NUnit Testing",file:"1. NUnit-Handson.docx",folder:"NUnit and Moq"},{id:"m4_t2",name:"Write Testable Code with Moq",file:"1. Moq-Handson.docx",folder:"NUnit and Moq"}], files:[{name:"1. NUnit-Handson.docx",type:"docx",path:"./DotNet FSE/Deepskilling/NUnit and Moq/1. NUnit-Handson.docx"},{name:"2. NUnit-Handson.docx",type:"docx",path:"./DotNet FSE/Deepskilling/NUnit and Moq/2. NUnit-Handson.docx"},{name:"3. NUnit-Handson.docx",type:"docx",path:"./DotNet FSE/Deepskilling/NUnit and Moq/3. NUnit-Handson.docx"},{name:"4. NUnit-Handson.docx",type:"docx",path:"./DotNet FSE/Deepskilling/NUnit and Moq/4. NUnit-Handson.docx"},{name:"5. NUnit-Handson.docx",type:"docx",path:"./DotNet FSE/Deepskilling/NUnit and Moq/5. NUnit-Handson.docx"},{name:"6. NUnit-Handson.docx",type:"docx",path:"./DotNet FSE/Deepskilling/NUnit and Moq/6. NUnit-Handson.docx"},{name:"7. NUnit-Handson.docx",type:"docx",path:"./DotNet FSE/Deepskilling/NUnit and Moq/7. NUnit-Handson.docx"},{name:"8. NUnit-Handson.docx",type:"docx",path:"./DotNet FSE/Deepskilling/NUnit and Moq/8. NUnit-Handson.docx"},{name:"9. NUnit-Handson.docx",type:"docx",path:"./DotNet FSE/Deepskilling/NUnit and Moq/9. NUnit-Handson.docx"},{name:"1. Moq-Handson.docx",type:"docx",path:"./DotNet FSE/Deepskilling/NUnit and Moq/1. Moq-Handson.docx"}], resources:[{label:"NUnit Framework",url:"https://www.c-sharpcorner.com/article/introduction-to-nunit-testing-framework/"},{label:"Test Pyramid",url:"https://martinfowler.com/articles/practical-test-pyramid.html"},{label:"Moq Guide",url:"https://www.codemag.com/Article/2305041/Using-Moq-A-Simple-Guide-to-Mocking-for-.NET"}]},
-  {id:"m5", num:5, name:"Entity Framework Core 8.0", week:3, time:"1 week", tool:"Visual Studio Community", overview:"Introduces Object Relational Mapping through Entity Framework Core 8.0. Covers DbContext, CRUD operations, LINQ queries, migrations, and relationships.", objectives:["Explain ORM framework concepts and EF Core features","Create database models using Code-First approach","Perform CRUD operations using EF Core","Write LINQ queries for data retrieval","Manage database schema using migrations"], concepts:[{name:"DbContext",desc:"Core EF class for database operations"},{name:"LINQ Queries",desc:"Language Integrated Query for data access"},{name:"Migrations",desc:"Manage schema changes over time"},{name:"Relationships",desc:"One-to-many, many-to-one, many-to-many"}], tasks:[{id:"m5_t1",name:"Understanding ORM with Retail Inventory",file:"EF Core 8.0 HOL.pdf",folder:"Entity Framework Core"},{id:"m5_t2",name:"Setting Up Database Context",file:"EF Core 8.0 HOL.pdf",folder:"Entity Framework Core"},{id:"m5_t3",name:"Create and Apply Migrations",file:"EF Core 8.0 HOL.pdf",folder:"Entity Framework Core"},{id:"m5_t4",name:"Inserting Initial Data",file:"EF Core 8.0 HOL.pdf",folder:"Entity Framework Core"},{id:"m5_t5",name:"Retrieving Data from Database",file:"EF Core 8.0 HOL.pdf",folder:"Entity Framework Core"}], files:[{name:"EF Core 8.0 HOL.pdf",type:"pdf",path:"./DotNet FSE/Deepskilling/Entity Framework Core/EF Core 8.0 HOL.pdf"}], resources:[{label:"EF Core Intro",url:"https://dotnettutorials.net/lesson/entity-framework-core/"},{label:"DbContext",url:"https://dotnettutorials.net/lesson/dbcontext-entity-framework-core/"},{label:"LINQ to Entities",url:"https://dotnettutorials.net/lesson/linq-to-entities-in-entity-framework-core/"}]},
-  {id:"m6", num:6, name:"ASP.NET Core Web API", week:4, time:"1.5 weeks", tool:"Visual Studio Community", overview:"Introduces RESTful service concepts and Web API implementation in .NET. Covers controllers, routing, JWT authentication, Swagger documentation, and exception handling.", objectives:["Explain RESTful web service concepts","Create Web API controllers with CRUD operations","Implement JWT-based authentication and authorization","Document APIs using Swagger/OpenAPI","Handle exceptions and implement logging"], concepts:[{name:"Controllers",desc:"Handle HTTP requests and responses"},{name:"Routing",desc:"Map URLs to controller actions"},{name:"JWT Auth",desc:"JSON Web Tokens for authentication"},{name:"Swagger",desc:"API documentation and testing interface"}], tasks:[{id:"m6_t1",name:"Web API Implementation - Part 1",file:"1. WebApi_Handson.docx",folder:"WebApi"},{id:"m6_t2",name:"Web API Implementation - Part 2",file:"2. WebApi_Handson.docx",folder:"WebApi"},{id:"m6_t3",name:"Authentication Setup",file:"3. WebApi_Handson.docx",folder:"WebApi"},{id:"m6_t4",name:"API Documentation",file:"4. WebApi_Handson.docx",folder:"WebApi"},{id:"m6_t5",name:"Error Handling",file:"5. WebApi_Handson.docx",folder:"WebApi"},{id:"m6_t6",name:"Testing Endpoints",file:"6. WebApi_Handson.docx",folder:"WebApi"}], files:[{name:"1. WebApi_Handson.docx",type:"docx",path:"./DotNet FSE/Deepskilling/WebApi/1. WebApi_Handson.docx"},{name:"2. WebApi_Handson.docx",type:"docx",path:"./DotNet FSE/Deepskilling/WebApi/2. WebApi_Handson.docx"},{name:"3. WebApi_Handson.docx",type:"docx",path:"./DotNet FSE/Deepskilling/WebApi/3. WebApi_Handson.docx"},{name:"4. WebApi_Handson.docx",type:"docx",path:"./DotNet FSE/Deepskilling/WebApi/4. WebApi_Handson.docx"},{name:"5. WebApi_Handson.docx",type:"docx",path:"./DotNet FSE/Deepskilling/WebApi/5. WebApi_Handson.docx"},{name:"6. WebApi_Handson.docx",type:"docx",path:"./DotNet FSE/Deepskilling/WebApi/6. WebApi_Handson.docx"}], resources:[{label:"Web API Intro",url:"https://dotnettutorials.net/lesson/introduction-to-asp-net-core-web-api/"},{label:"Controllers",url:"https://dotnettutorials.net/lesson/controllers-in-asp-net-core-web-api/"},{label:"JWT Auth",url:"https://dotnettutorials.net/lesson/jwt-authentication-in-asp-net-core-web-api/"}]},
-  {id:"m7", num:7, name:"Microservices Architecture", week:5, time:"0.5 week", tool:"Visual Studio Community", overview:"Focuses on microservices architectural pattern using ASP.NET Core. Covers service communication, data management, security, monitoring and deployment.", objectives:["Explain microservices architecture pattern","Compare Microservices vs Monolithic architecture","Demonstrate service discovery patterns","Explain monitoring and logging in microservices","Understand Docker and Kubernetes deployment"], concepts:[{name:"Service Boundaries",desc:"Design independent, deployable services"},{name:"Inter-service Comm",desc:"Sync and async communication patterns"},{name:"Data Management",desc:"Database per service pattern"},{name:"Resilience",desc:"Circuit breakers and retry logic"}], tasks:[{id:"m7_t1",name:"Microservices Pattern Implementation",file:"1. Microservices - JWT.pdf",folder:"Microservices"}], files:[{name:"1. Microservices - JWT.pdf",type:"pdf",path:"./DotNet FSE/Deepskilling/Microservices/1. Microservices - JWT.pdf"}], resources:[{label:"Microservices",url:"https://dotnettutorials.net/lesson/microservices-using-asp-net-core/"},{label:"Inter-service Communication",url:"https://www.geeksforgeeks.org/inter-service-communication-in-microservices/"},{label:"Health Checks",url:"https://medium.com/@jeslurrahman/implementing-health-checks-in-net-8-c3ba10af83c3"}]},
-  {id:"m8", num:8, name:"Angular (v20.0)", week:6, time:"2 weeks", tool:"VS Code", overview:"Comprehensive introduction to Angular covering components, directives, forms, services, routing, HTTP communication, state management with NgRx, and reactive programming with RxJS.", objectives:["Explain Angular architecture and project structure","Develop and manage Angular components with data binding","Use directives and pipes for UI control","Build template-driven and reactive forms","Implement dependency injection and services","Configure routing with guards and lazy loading","Integrate APIs using HttpClient and Observables","Apply state management with NgRx"], concepts:[{name:"Components",desc:"Reusable UI building blocks"},{name:"Services",desc:"Business logic and data sharing"},{name:"Routing",desc:"Navigate between components"},{name:"RxJS",desc:"Reactive programming with Observables"}], tasks:[{id:"m8_t1",name:"Angular Full Stack Implementation",file:"1. ReactJS-HOL.docx",folder:"React"}], files:[{name:"1. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/1. ReactJS-HOL.docx"},{name:"2. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/2. ReactJS-HOL.docx"},{name:"3. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/3. ReactJS-HOL.docx"},{name:"4. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/4. ReactJS-HOL.docx"},{name:"5. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/5. ReactJS-HOL.docx"},{name:"6. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/6. ReactJS-HOL.docx"},{name:"7. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/7. ReactJS-HOL.docx"},{name:"8. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/8. ReactJS-HOL.docx"},{name:"9. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/9. ReactJS-HOL.docx"},{name:"10. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/10. ReactJS-HOL.docx"},{name:"11. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/11. ReactJS-HOL.docx"},{name:"12. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/12. ReactJS-HOL.docx"},{name:"13. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/13. ReactJS-HOL.docx"},{name:"14. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/14. ReactJS-HOL.docx"},{name:"15. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/15. ReactJS-HOL.docx"},{name:"16. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/16. ReactJS-HOL.docx"},{name:"17. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/17. ReactJS-HOL.docx"},{name:"18. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/18. ReactJS-HOL.docx"},{name:"19. ReactJS-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/React/19. ReactJS-HOL.docx"}], resources:[{label:"Angular Tutorial",url:"https://www.geeksforgeeks.org/angular-js/angular-tutorial/"},{label:"Angular Cheat Sheet",url:"https://www.geeksforgeeks.org/angular-js/angular-cheat-sheet-a-basic-guide-to-angular/"},{label:"Lifecycle Hooks",url:"https://www.geeksforgeeks.org/angular-js/component-lifecycle-in-angular/"}]},
+  {id:"m1", num:1, name:"Design Patterns & Principles", week:1, time:"2 days", tool:"Visual Studio Community", overview:"This module introduces learners to essential design principles and patterns crucial for creating robust and maintainable software. Covers SOLID principles (SRP, OCP, LSP, ISP, DIP) and common design patterns including Creational, Structural, and Behavioral patterns.", objectives:["Grasp the importance of the Single Responsibility Principle (SRP)","Implement the Open/Closed Principle (OCP) to create extendable software","Ensure software components adhere to the Liskov Substitution Principle (LSP)","Design interfaces following the Interface Segregation Principle (ISP)","Apply the Dependency Inversion Principle (DIP) for flexible dependency management","Recognize and apply Creational Patterns (Singleton, Factory, Builder)","Utilize Structural Patterns (Adapter, Decorator, Proxy)","Employ Behavioral Patterns (Observer, Strategy, Command)"], concepts:[{name:"SOLID Principles",desc:"Five design principles for writing maintainable software"},{name:"Singleton Pattern",desc:"Ensure a class has only one instance"},{name:"Factory Pattern",desc:"Create objects without specifying exact classes"},{name:"Adapter Pattern",desc:"Make incompatible interfaces compatible"}], tasks:[{id:"m1_t1",name:"Implementing the Singleton Pattern",file:"Design Patterns and Principles.docx",folder:"Engineering concepts"},{id:"m1_t2",name:"Implementing the Factory Method Pattern",file:"Design Patterns and Principles.docx",folder:"Engineering concepts"}], files:[{name:"Design Patterns and Principles.docx",type:"docx",path:"./Deepskilling/Engineering concepts/Design Patterns and Principles.docx"}], resources:[{label:"SOLID Principles Guide",url:"https://www.baeldung.com/solid-principles"},{label:"Design Patterns Reference",url:"https://medium.com/@softwaretechsolution/design-pattern-81ef65829de2"},{label:"Refactoring.Guru Patterns",url:"https://refactoring.guru/design-patterns/csharp"}]},
+  {id:"m2", num:2, name:"Data Structures & Algorithms", week:1, time:"2 days", tool:"Visual Studio Community", overview:"Focuses on core data structures and algorithms foundational for writing efficient and scalable code. Covers arrays, linked lists, searching (linear, binary) and sorting (bubble, quick, merge) algorithms.", objectives:["Choose appropriate data structures based on problem requirements","Apply searching algorithms to find elements in data structures","Utilize sorting algorithms to order data efficiently","Solve coding problems using appropriate data structures and algorithms","Analyze algorithmic complexities to optimize performance"], concepts:[{name:"Arrays & Lists",desc:"Linear data structures for storing collections"},{name:"Sorting Algorithms",desc:"QuickSort, MergeSort, and Bubble Sort techniques"},{name:"Searching Algorithms",desc:"Binary and linear search methods"},{name:"Complexity Analysis",desc:"Big O notation and time/space analysis"}], tasks:[{id:"m2_t1",name:"E-commerce Platform Search Function",file:"Algorithms_Data Structures.docx",folder:"Engineering concepts"},{id:"m2_t2",name:"Financial Forecasting",file:"Algorithms_Data Structures.docx",folder:"Engineering concepts"}], files:[{name:"Algorithms_Data Structures.docx",type:"docx",path:"./Deepskilling/Engineering concepts/Algorithms_Data Structures.docx"}], resources:[{label:"Algorithm Analysis",url:"https://www.geeksforgeeks.org/design-and-analysis-of-algorithms/"},{label:"Sorting Algorithms",url:"https://www.geeksforgeeks.org/sorting-algorithms/"},{label:"Array Guide",url:"https://www.geeksforgeeks.org/array-data-structure-guide/"}]},
+  {id:"m3", num:3, name:"Advanced SQL", week:2, time:"2 days", tool:"SSMS", overview:"Covers advanced SQL Server topics including window functions, CTEs, stored procedures, triggers, cursors, exception handling, and transactions.", objectives:["Write advanced SQL queries using window functions and CTEs","Create and manage stored procedures and user-defined functions","Implement triggers and understand cursor usage","Handle exceptions using TRY/CATCH","Manage transactions with ACID properties"], concepts:[{name:"Window Functions",desc:"ROW_NUMBER, RANK, DENSE_RANK, LAG, LEAD"},{name:"CTEs",desc:"Common Table Expressions for complex queries"},{name:"Stored Procedures",desc:"Create reusable SQL procedures with parameters"},{name:"Triggers",desc:"Automate actions on table modifications"}], tasks:[{id:"m3_t1",name:"Ranking and Window Functions",file:"1. SQL Exercise - Advanced concepts.pdf",folder:"Advanced SQL server"},{id:"m3_t2",name:"Create a Stored Procedure",file:"4. SQL Exercise - Stored procedure.pdf",folder:"Advanced SQL server"},{id:"m3_t3",name:"Return Data from a Stored Procedure",file:"5. SQL Exercise - Functions.pdf",folder:"Advanced SQL server"}], files:[{name:"1. SQL Exercise - Advanced concepts.pdf",type:"pdf",path:"./Deepskilling/Advanced SQL server/1. SQL Exercise - Advanced concepts.pdf"},{name:"2. SQL Exercise - Index.sql",type:"sql",path:"./Deepskilling/Advanced SQL server/2. SQL Exercise - Index.sql"},{name:"3. SQL Exercise - Views.pdf",type:"pdf",path:"./Deepskilling/Advanced SQL server/3. SQL Exercise - Views.pdf"},{name:"4. SQL Exercise - Stored procedure.pdf",type:"pdf",path:"./Deepskilling/Advanced SQL server/4. SQL Exercise - Stored procedure.pdf"},{name:"5. SQL Exercise - Functions.pdf",type:"pdf",path:"./Deepskilling/Advanced SQL server/5. SQL Exercise - Functions.pdf"},{name:"6. SQL Exercise - Triggers.pdf",type:"pdf",path:"./Deepskilling/Advanced SQL server/6. SQL Exercise - Triggers.pdf"},{name:"7. SQL Exercise - Cursors.pdf",type:"pdf",path:"./Deepskilling/Advanced SQL server/7. SQL Exercise - Cursors.pdf"},{name:"8. SQL Exercise - Exception handling.pdf",type:"pdf",path:"./Deepskilling/Advanced SQL server/8. SQL Exercise - Exception handling.pdf"}], resources:[{label:"Window Functions",url:"https://www.sqlservertutorial.net/sql-server-window-functions/"},{label:"SQL Basics",url:"https://www.sqlservertutorial.net/sql-server-basics/"},{label:"Stored Procedures",url:"https://www.sqlservertutorial.net/sql-server-stored-procedures/"}]},
+  {id:"m4", num:4, name:"NUnit and Moq", week:2, time:"1 day", tool:"Visual Studio Community", overview:"Focuses on unit testing using Microsoft .NET's NUnit framework and Moq mocking library. Covers test-driven development and writing testable code.", objectives:["Explain automated testing and its benefits","Demonstrate unit testing concepts using NUnit framework","Use Moq framework to mock dependencies in unit tests"], concepts:[{name:"Unit Testing",desc:"Test individual units of code in isolation"},{name:"AAA Pattern",desc:"Arrange, Act, Assert testing methodology"},{name:"Mocking",desc:"Create mock objects to isolate dependencies"},{name:"TDD",desc:"Test-Driven Development workflow"}], tasks:[{id:"m4_t1",name:"NUnit Testing",file:"1. NUnit-Handson.docx",folder:"NUnit and Moq"},{id:"m4_t2",name:"Write Testable Code with Moq",file:"1. Moq-Handson.docx",folder:"NUnit and Moq"}], files:[{name:"1. NUnit-Handson.docx",type:"docx",path:"./Deepskilling/NUnit and Moq/1. NUnit-Handson.docx"},{name:"2. NUnit-Handson.docx",type:"docx",path:"./Deepskilling/NUnit and Moq/2. NUnit-Handson.docx"},{name:"3. NUnit-Handson.docx",type:"docx",path:"./Deepskilling/NUnit and Moq/3. NUnit-Handson.docx"},{name:"4. NUnit-Handson.docx",type:"docx",path:"./Deepskilling/NUnit and Moq/4. NUnit-Handson.docx"},{name:"5. NUnit-Handson.docx",type:"docx",path:"./Deepskilling/NUnit and Moq/5. NUnit-Handson.docx"},{name:"6. NUnit-Handson.docx",type:"docx",path:"./Deepskilling/NUnit and Moq/6. NUnit-Handson.docx"},{name:"7. NUnit-Handson.docx",type:"docx",path:"./Deepskilling/NUnit and Moq/7. NUnit-Handson.docx"},{name:"8. NUnit-Handson.docx",type:"docx",path:"./Deepskilling/NUnit and Moq/8. NUnit-Handson.docx"},{name:"9. NUnit-Handson.docx",type:"docx",path:"./Deepskilling/NUnit and Moq/9. NUnit-Handson.docx"},{name:"1. Moq-Handson.docx",type:"docx",path:"./Deepskilling/NUnit and Moq/1. Moq-Handson.docx"}], resources:[{label:"NUnit Framework",url:"https://www.c-sharpcorner.com/article/introduction-to-nunit-testing-framework/"},{label:"Test Pyramid",url:"https://martinfowler.com/articles/practical-test-pyramid.html"},{label:"Moq Guide",url:"https://www.codemag.com/Article/2305041/Using-Moq-A-Simple-Guide-to-Mocking-for-.NET"}]},
+  {id:"m5", num:5, name:"Entity Framework Core 8.0", week:3, time:"1 week", tool:"Visual Studio Community", overview:"Introduces Object Relational Mapping through Entity Framework Core 8.0. Covers DbContext, CRUD operations, LINQ queries, migrations, and relationships.", objectives:["Explain ORM framework concepts and EF Core features","Create database models using Code-First approach","Perform CRUD operations using EF Core","Write LINQ queries for data retrieval","Manage database schema using migrations"], concepts:[{name:"DbContext",desc:"Core EF class for database operations"},{name:"LINQ Queries",desc:"Language Integrated Query for data access"},{name:"Migrations",desc:"Manage schema changes over time"},{name:"Relationships",desc:"One-to-many, many-to-one, many-to-many"}], tasks:[{id:"m5_t1",name:"Understanding ORM with Retail Inventory",file:"EF Core 8.0 HOL.pdf",folder:"Entity Framework Core"},{id:"m5_t2",name:"Setting Up Database Context",file:"EF Core 8.0 HOL.pdf",folder:"Entity Framework Core"},{id:"m5_t3",name:"Create and Apply Migrations",file:"EF Core 8.0 HOL.pdf",folder:"Entity Framework Core"},{id:"m5_t4",name:"Inserting Initial Data",file:"EF Core 8.0 HOL.pdf",folder:"Entity Framework Core"},{id:"m5_t5",name:"Retrieving Data from Database",file:"EF Core 8.0 HOL.pdf",folder:"Entity Framework Core"}], files:[{name:"EF Core 8.0 HOL.pdf",type:"pdf",path:"./Deepskilling/Entity Framework Core/EF Core 8.0 HOL.pdf"}], resources:[{label:"EF Core Intro",url:"https://dotnettutorials.net/lesson/entity-framework-core/"},{label:"DbContext",url:"https://dotnettutorials.net/lesson/dbcontext-entity-framework-core/"},{label:"LINQ to Entities",url:"https://dotnettutorials.net/lesson/linq-to-entities-in-entity-framework-core/"}]},
+  {id:"m6", num:6, name:"ASP.NET Core Web API", week:4, time:"1.5 weeks", tool:"Visual Studio Community", overview:"Introduces RESTful service concepts and Web API implementation in .NET. Covers controllers, routing, JWT authentication, Swagger documentation, and exception handling.", objectives:["Explain RESTful web service concepts","Create Web API controllers with CRUD operations","Implement JWT-based authentication and authorization","Document APIs using Swagger/OpenAPI","Handle exceptions and implement logging"], concepts:[{name:"Controllers",desc:"Handle HTTP requests and responses"},{name:"Routing",desc:"Map URLs to controller actions"},{name:"JWT Auth",desc:"JSON Web Tokens for authentication"},{name:"Swagger",desc:"API documentation and testing interface"}], tasks:[{id:"m6_t1",name:"Web API Implementation - Part 1",file:"1. WebApi_Handson.docx",folder:"WebApi"},{id:"m6_t2",name:"Web API Implementation - Part 2",file:"2. WebApi_Handson.docx",folder:"WebApi"},{id:"m6_t3",name:"Authentication Setup",file:"3. WebApi_Handson.docx",folder:"WebApi"},{id:"m6_t4",name:"API Documentation",file:"4. WebApi_Handson.docx",folder:"WebApi"},{id:"m6_t5",name:"Error Handling",file:"5. WebApi_Handson.docx",folder:"WebApi"},{id:"m6_t6",name:"Testing Endpoints",file:"6. WebApi_Handson.docx",folder:"WebApi"}], files:[{name:"1. WebApi_Handson.docx",type:"docx",path:"./Deepskilling/WebApi/1. WebApi_Handson.docx"},{name:"2. WebApi_Handson.docx",type:"docx",path:"./Deepskilling/WebApi/2. WebApi_Handson.docx"},{name:"3. WebApi_Handson.docx",type:"docx",path:"./Deepskilling/WebApi/3. WebApi_Handson.docx"},{name:"4. WebApi_Handson.docx",type:"docx",path:"./Deepskilling/WebApi/4. WebApi_Handson.docx"},{name:"5. WebApi_Handson.docx",type:"docx",path:"./Deepskilling/WebApi/5. WebApi_Handson.docx"},{name:"6. WebApi_Handson.docx",type:"docx",path:"./Deepskilling/WebApi/6. WebApi_Handson.docx"}], resources:[{label:"Web API Intro",url:"https://dotnettutorials.net/lesson/introduction-to-asp-net-core-web-api/"},{label:"Controllers",url:"https://dotnettutorials.net/lesson/controllers-in-asp-net-core-web-api/"},{label:"JWT Auth",url:"https://dotnettutorials.net/lesson/jwt-authentication-in-asp-net-core-web-api/"}]},
+  {id:"m7", num:7, name:"Microservices Architecture", week:5, time:"0.5 week", tool:"Visual Studio Community", overview:"Focuses on microservices architectural pattern using ASP.NET Core. Covers service communication, data management, security, monitoring and deployment.", objectives:["Explain microservices architecture pattern","Compare Microservices vs Monolithic architecture","Demonstrate service discovery patterns","Explain monitoring and logging in microservices","Understand Docker and Kubernetes deployment"], concepts:[{name:"Service Boundaries",desc:"Design independent, deployable services"},{name:"Inter-service Comm",desc:"Sync and async communication patterns"},{name:"Data Management",desc:"Database per service pattern"},{name:"Resilience",desc:"Circuit breakers and retry logic"}], tasks:[{id:"m7_t1",name:"Microservices Pattern Implementation",file:"1. Microservices - JWT.pdf",folder:"Microservices"}], files:[{name:"1. Microservices - JWT.pdf",type:"pdf",path:"./Deepskilling/Microservices/1. Microservices - JWT.pdf"}], resources:[{label:"Microservices",url:"https://dotnettutorials.net/lesson/microservices-using-asp-net-core/"},{label:"Inter-service Communication",url:"https://www.geeksforgeeks.org/inter-service-communication-in-microservices/"},{label:"Health Checks",url:"https://medium.com/@jeslurrahman/implementing-health-checks-in-net-8-c3ba10af83c3"}]},
+  {id:"m8", num:8, name:"Angular (v20.0)", week:6, time:"2 weeks", tool:"VS Code", overview:"Comprehensive introduction to Angular covering components, directives, forms, services, routing, HTTP communication, state management with NgRx, and reactive programming with RxJS.", objectives:["Explain Angular architecture and project structure","Develop and manage Angular components with data binding","Use directives and pipes for UI control","Build template-driven and reactive forms","Implement dependency injection and services","Configure routing with guards and lazy loading","Integrate APIs using HttpClient and Observables","Apply state management with NgRx"], concepts:[{name:"Components",desc:"Reusable UI building blocks"},{name:"Services",desc:"Business logic and data sharing"},{name:"Routing",desc:"Navigate between components"},{name:"RxJS",desc:"Reactive programming with Observables"}], tasks:[{id:"m8_t1",name:"Angular Full Stack Implementation",file:"1. ReactJS-HOL.docx",folder:"React"}], files:[{name:"1. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/1. ReactJS-HOL.docx"},{name:"2. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/2. ReactJS-HOL.docx"},{name:"3. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/3. ReactJS-HOL.docx"},{name:"4. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/4. ReactJS-HOL.docx"},{name:"5. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/5. ReactJS-HOL.docx"},{name:"6. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/6. ReactJS-HOL.docx"},{name:"7. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/7. ReactJS-HOL.docx"},{name:"8. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/8. ReactJS-HOL.docx"},{name:"9. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/9. ReactJS-HOL.docx"},{name:"10. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/10. ReactJS-HOL.docx"},{name:"11. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/11. ReactJS-HOL.docx"},{name:"12. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/12. ReactJS-HOL.docx"},{name:"13. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/13. ReactJS-HOL.docx"},{name:"14. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/14. ReactJS-HOL.docx"},{name:"15. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/15. ReactJS-HOL.docx"},{name:"16. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/16. ReactJS-HOL.docx"},{name:"17. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/17. ReactJS-HOL.docx"},{name:"18. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/18. ReactJS-HOL.docx"},{name:"19. ReactJS-HOL.docx",type:"docx",path:"./Deepskilling/React/19. ReactJS-HOL.docx"}], resources:[{label:"Angular Tutorial",url:"https://www.geeksforgeeks.org/angular-js/angular-tutorial/"},{label:"Angular Cheat Sheet",url:"https://www.geeksforgeeks.org/angular-js/angular-cheat-sheet-a-basic-guide-to-angular/"},{label:"Lifecycle Hooks",url:"https://www.geeksforgeeks.org/angular-js/component-lifecycle-in-angular/"}]},
   {id:"m9", num:9, name:"Application Debugging", week:6, time:"Parallel", tool:"VS Code + Chrome", overview:"Focuses on debugging Angular applications using Chrome DevTools and VS Code debugger. Covers DOM inspection, breakpoints, TypeScript debugging, and state management debugging.", objectives:["Debug Angular apps using Chrome DevTools","Analyze TypeScript code using Sources panel","Configure VS Code debugger with launch.json","Debug NgRx store and services"], concepts:[{name:"DevTools",desc:"Browser debugging interface"},{name:"Breakpoints",desc:"Pause code execution for inspection"},{name:"Watches",desc:"Monitor variable values in real-time"},{name:"Debugging",desc:"Angular-specific debugging techniques"}], tasks:[], files:[], resources:[{label:"Chrome DevTools",url:"https://developer.chrome.com/docs/devtools/"},{label:"Debugging Guide",url:"https://angular.io/guide/debugging"},{label:"VS Code Debugger",url:"https://javascript.plainenglish.io/debug-angular-like-a-pro-stop-using-console-logs-and-start-using-vs-code-debugger-f1c6c001eac1"}]},
-  {id:"m10", num:10, name:"Version Control — GIT", week:7, time:"Parallel", tool:"Terminal", overview:"Covers Git fundamentals including branching, merging, remote repositories, and collaboration workflows like Gitflow.", objectives:["Explain version control concepts","Demonstrate branch clone, push, forking operations","Explain branch workflow strategies"], concepts:[{name:"Branching",desc:"Parallel development workflows"},{name:"Merging",desc:"Combine changes from multiple branches"},{name:"Remote Repos",desc:"Collaborate with distributed teams"},{name:"Workflows",desc:"Gitflow and GitHub Flow strategies"}], tasks:[{id:"m10_t1",name:"Git Workflow Implementation",file:"1. Git-HOL.docx",folder:"GIT"}], files:[{name:"1. Git-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/GIT/1. Git-HOL.docx"},{name:"2. Git-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/GIT/2. Git-HOL.docx"},{name:"3. Git-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/GIT/3. Git-HOL.docx"},{name:"4. Git-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/GIT/4. Git-HOL.docx"},{name:"5. Git-HOL.docx",type:"docx",path:"./DotNet FSE/Deepskilling/GIT/5. Git-HOL.docx"}], resources:[{label:"Git Tutorial",url:"https://www.geeksforgeeks.org/git-tutorial/"},{label:"Branching",url:"https://www.geeksforgeeks.org/branching-strategies-in-git/"},{label:"Git Merge",url:"https://www.geeksforgeeks.org/git-merge/"}]},
+  {id:"m10", num:10, name:"Version Control — GIT", week:7, time:"Parallel", tool:"Terminal", overview:"Covers Git fundamentals including branching, merging, remote repositories, and collaboration workflows like Gitflow.", objectives:["Explain version control concepts","Demonstrate branch clone, push, forking operations","Explain branch workflow strategies"], concepts:[{name:"Branching",desc:"Parallel development workflows"},{name:"Merging",desc:"Combine changes from multiple branches"},{name:"Remote Repos",desc:"Collaborate with distributed teams"},{name:"Workflows",desc:"Gitflow and GitHub Flow strategies"}], tasks:[{id:"m10_t1",name:"Git Workflow Implementation",file:"1. Git-HOL.docx",folder:"GIT"}], files:[{name:"1. Git-HOL.docx",type:"docx",path:"./Deepskilling/GIT/1. Git-HOL.docx"},{name:"2. Git-HOL.docx",type:"docx",path:"./Deepskilling/GIT/2. Git-HOL.docx"},{name:"3. Git-HOL.docx",type:"docx",path:"./Deepskilling/GIT/3. Git-HOL.docx"},{name:"4. Git-HOL.docx",type:"docx",path:"./Deepskilling/GIT/4. Git-HOL.docx"},{name:"5. Git-HOL.docx",type:"docx",path:"./Deepskilling/GIT/5. Git-HOL.docx"}], resources:[{label:"Git Tutorial",url:"https://www.geeksforgeeks.org/git-tutorial/"},{label:"Branching",url:"https://www.geeksforgeeks.org/branching-strategies-in-git/"},{label:"Git Merge",url:"https://www.geeksforgeeks.org/git-merge/"}]},
   {id:"m11", num:11, name:"DevOps and CI/CD", week:7, time:"Parallel", tool:"Theory", overview:"Introduces DevOps concepts, Continuous Integration and Continuous Delivery/Deployment principles and popular tools.", objectives:["Explain DevOps concepts and goals","Explain CI and CD components","List popular DevOps tools (Jenkins, GitHub Actions, GitLab CI/CD)"], concepts:[{name:"CI/CD Pipeline",desc:"Automate build, test, and deployment"},{name:"Infrastructure",desc:"Infrastructure as Code (IaC)"},{name:"Monitoring",desc:"Observability and alerting"},{name:"Collaboration",desc:"DevOps culture and practices"}], tasks:[], files:[], resources:[{label:"DevOps",url:"https://www.geeksforgeeks.org/devops-tutorial/"},{label:"CI/CD",url:"https://www.geeksforgeeks.org/what-is-ci-cd/"}]},
   {id:"m12", num:12, name:"Containerization using Docker", week:7, time:"Parallel", tool:"Docker Desktop", overview:"Covers Docker fundamentals including containers, images, Docker Compose, networking, storage, and container orchestration with Kubernetes overview.", objectives:["Explain Docker concepts and features","List basic Docker commands","Explain Docker storage, networking, and orchestration"], concepts:[{name:"Containers",desc:"Lightweight, portable execution environments"},{name:"Images",desc:"Blueprints for creating containers"},{name:"Docker Compose",desc:"Multi-container orchestration"},{name:"Registries",desc:"Store and share Docker images"}], tasks:[], files:[], resources:[{label:"Docker Tutorial",url:"https://www.geeksforgeeks.org/docker-tutorial/"}]},
   {id:"m13", num:13, name:"Agile Methodology", week:7, time:"Parallel", tool:"Theory", overview:"Covers Agile principles, Scrum framework, estimation techniques, user stories and acceptance criteria.", objectives:["Explain Agile principles and the Agile Manifesto","Describe Scrum roles, ceremonies, and artifacts","Apply estimation techniques (story points, planning poker)","Write effective user stories with INVEST principle"], concepts:[{name:"Agile Principles",desc:"Values and practices for team collaboration"},{name:"Scrum",desc:"Framework for managing work"},{name:"User Stories",desc:"Express requirements from user perspective"},{name:"Estimation",desc:"Story points and velocity planning"}], tasks:[], files:[], resources:[{label:"Agile",url:"https://www.atlassian.com/agile"},{label:"Scrum",url:"https://www.atlassian.com/agile/scrum"},{label:"User Stories",url:"https://www.atlassian.com/agile/project-management/user-stories/"}]},
@@ -260,13 +387,13 @@ const MODULES = [
 ];
 
 const UPSKILLING_PDFS = [
-  {name:"Module 1-HTML 5.pdf", path:"./DotNet FSE/Upskilling/Module 1-HTML 5.pdf", modules:[8]},
-  {name:"Module 1-CSS3.pdf", path:"./DotNet FSE/Upskilling/Module 1-CSS3.pdf", modules:[8]},
-  {name:"Module 1-JavaScript.pdf", path:"./DotNet FSE/Upskilling/Module 1-JavaScript.pdf", modules:[8]},
-  {name:"Module 1-Bootstrap5.pdf", path:"./DotNet FSE/Upskilling/Module 1-Bootstrap5.pdf", modules:[8]},
-  {name:"Module 1-jQuery.pdf", path:"./DotNet FSE/Upskilling/Module 1-jQuery.pdf", modules:[8]},
-  {name:"Module 2-ANSI SQL Using MySQL.pdf", path:"./DotNet FSE/Upskilling/Module 2-ANSI SQL Using MySQL.pdf", modules:[3]},
-  {name:"Module 3-C#ADO.NET.pdf", path:"./DotNet FSE/Upskilling/Module 3-C#ADO.NET.pdf", modules:[5,6]}
+  {name:"Module 1-HTML 5.pdf", path:"./Upskilling/Module 1-HTML 5.pdf", modules:[8]},
+  {name:"Module 1-CSS3.pdf", path:"./Upskilling/Module 1-CSS3.pdf", modules:[8]},
+  {name:"Module 1-JavaScript.pdf", path:"./Upskilling/Module 1-JavaScript.pdf", modules:[8]},
+  {name:"Module 1-Bootstrap5.pdf", path:"./Upskilling/Module 1-Bootstrap5.pdf", modules:[8]},
+  {name:"Module 1-jQuery.pdf", path:"./Upskilling/Module 1-jQuery.pdf", modules:[8]},
+  {name:"Module 2-ANSI SQL Using MySQL.pdf", path:"./Upskilling/Module 2-ANSI SQL Using MySQL.pdf", modules:[3]},
+  {name:"Module 3-C#ADO.NET.pdf", path:"./Upskilling/Module 3-C#ADO.NET.pdf", modules:[5,6]}
 ];
 
 let state={tasks:{},notes:{},lastUpdated:null};
@@ -290,6 +417,8 @@ function render(){
   else if(activeModuleId==="info") renderInfo();
   else renderModule(MODULES.find(m=>m.id===activeModuleId));
   document.getElementById("sidebar").classList.remove("open");
+  document.getElementById("scrim").classList.remove("show");
+  window.scrollTo({top:0,behavior:"instant"});
 }
 
 function renderTopbar(){
@@ -299,9 +428,11 @@ function renderTopbar(){
   document.getElementById("progressFill").style.width=pct+"%";
   document.getElementById("progressCaption").textContent=`${done} of ${total}`;
   document.getElementById("progressPercent").textContent=`${pct}%`;
-  const circumference=2*Math.PI*18;
+  const circumference=2*Math.PI*18; // r=18 → ~113.1
   const offset=circumference-(pct/100)*circumference;
-  document.getElementById("progressRing").style.strokeDashoffset=offset;
+  const ring=document.getElementById("progressRing");
+  ring.style.strokeDasharray=circumference;
+  ring.style.strokeDashoffset=offset;
 }
 
 function renderSidebar(){
@@ -334,10 +465,11 @@ function renderDashboard(){
   const inProgressModules=MODULES.filter(m=>{const d=moduleDoneCount(m);return m.tasks.length>0&&d>0&&d<m.tasks.length});
   const upcomingModules=MODULES.filter(m=>m.tasks.length>0&&moduleDoneCount(m)===0);
 
+  const greeting=new Date().getHours()<12?"morning":new Date().getHours()<17?"afternoon":"evening";
   let html=`<div class="page">
     <div class="hero">
-      <h1>Good ${new Date().getHours()<12?"morning":"afternoon"}, let's keep building. 👋</h1>
-      <div class="subtext">${dateStr} • 7-week program · 14 modules · 23 mandatory tasks</div>
+      <h1>Good ${greeting}, let's keep building 👋</h1>
+      <div class="subtext">${dateStr} · 14 modules · 23 mandatory tasks</div>
     </div>
 
     <div class="stat-grid">
@@ -359,58 +491,61 @@ function renderDashboard(){
       </div>
     </div>
 
-    <div class="progress-section">
+    <div class="panel">
       <h3>Overall Completion</h3>
       <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
-      <div class="progress-text"><span>${done} of ${total} completed</span><span>${pct}% complete</span></div>
-      ${MODULES.map(m=>{
+      <div class="progress-text"><span>${done} of ${total} tasks completed</span><span>${pct}%</span></div>
+      ${MODULES.filter(m=>m.tasks.length>0).map(m=>{
         const d=moduleDoneCount(m);
         const mp=Math.round(d/m.tasks.length*100);
+        const isComplete=d===m.tasks.length;
         return `<div class="mini-progress">
           <div class="mini-progress-label">
             <span class="mini-progress-label-name">${m.name}</span>
             <span class="mini-progress-label-pct">${d}/${m.tasks.length}</span>
           </div>
-          <div class="mini-progress-bar"><div class="mini-progress-bar-fill" style="width:${mp}%"></div></div>
+          <div class="mini-progress-bar"><div class="mini-progress-bar-fill ${isComplete?'done':''}" style="width:${mp}%"></div></div>
         </div>`;
       }).join('')}
     </div>
 
     <div class="panel">
       <h3>7-Week Learning Roadmap</h3>
-      <table class="roadmap-table">
-        <thead>
-          <tr><th>Week</th><th>Days</th><th>Modules</th><th>Est. Hours</th><th>Status</th></tr>
-        </thead>
-        <tbody>
-          ${ROADMAP_DATA.map(r=>`<tr>
-            <td>Week ${r.week}</td>
-            <td>${r.days}</td>
-            <td>${r.modules}</td>
-            <td>${r.hours} hrs</td>
-            <td><span class="badge ${r.status==="Completed"?"green":r.status==="In Progress"?"blue":"gray"}">${r.status}</span></td>
-          </tr>`).join('')}
-        </tbody>
-      </table>
+      <div class="table-wrap">
+        <table class="roadmap-table">
+          <thead>
+            <tr><th>Week</th><th>Days</th><th>Modules</th><th>Est. Hours</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            ${ROADMAP_DATA.map(r=>`<tr>
+              <td><strong>Week ${r.week}</strong></td>
+              <td>${r.days}</td>
+              <td>${r.modules}</td>
+              <td>${r.hours} hrs</td>
+              <td><span class="badge ${r.status==="Completed"?"green":r.status==="In Progress"?"blue":"gray"}">${r.status}</span></td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <div class="panel">
       <h3>Tools You'll Use</h3>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div class="panel-grid-3">
         <div class="tool-card">
           <div class="tool-icon">🛠️</div>
           <div class="tool-title">Visual Studio Community</div>
-          <div class="tool-desc">Used for: Design Patterns, DSA, NUnit/Moq, EF Core, Web API, Microservices</div>
+          <div class="tool-desc">Design Patterns, DSA, NUnit/Moq, EF Core, Web API, Microservices</div>
         </div>
         <div class="tool-card">
           <div class="tool-icon">📊</div>
           <div class="tool-title">SQL Server Management Studio</div>
-          <div class="tool-desc">Used for: Advanced SQL (all exercises)</div>
+          <div class="tool-desc">Advanced SQL — all exercises</div>
         </div>
         <div class="tool-card">
           <div class="tool-icon">💻</div>
           <div class="tool-title">VS Code</div>
-          <div class="tool-desc">Used for: Angular, Git, Docker, CI/CD</div>
+          <div class="tool-desc">Angular, Git, Docker, CI/CD</div>
         </div>
       </div>
     </div>
@@ -434,15 +569,39 @@ function resolveAssetPath(filePath){
   return filePath;
 }
 
+function fileIcon(type){const t=(type||'').toLowerCase();if(t==='pdf')return'📕';if(t==='docx'||t==='doc')return'📘';if(t==='sql')return'🗄️';return'📄'}
+
+function fileCardHtml(name,type,path){
+  return `<div class="file-card">
+    <div class="file-icon">${fileIcon(type)}</div>
+    <div class="file-info">
+      <div class="file-name">${name}</div>
+      <div class="file-type">${(type||'file').toUpperCase()}</div>
+    </div>
+    <div class="file-actions">
+      <button class="btn primary" type="button" onclick="openFileInViewer('${path}')">Open</button>
+      <a class="btn" href="${resolveAssetPath(path)}" download>Download</a>
+    </div>
+  </div>`;
+}
+
 function openFileInViewer(filePath){
   const assetPath=resolveAssetPath(filePath);
   const fullPath=new URL(assetPath,window.location.href).href;
   const encoded=encodeURIComponent(fullPath);
-  const canUseOnlineViewer=window.location.protocol!=='file:' && /^https?:\/\//i.test(fullPath);
-  if(filePath.endsWith('.pdf') && canUseOnlineViewer){
-    window.open(`https://docs.google.com/viewer?url=${encoded}`,'_blank');
-  }else if(filePath.endsWith('.docx') && canUseOnlineViewer){
-    window.open(`https://view.officeapps.live.com/op/embed.aspx?src=${encoded}`,'_blank');
+  const isDeployed=/^https?:\/\//i.test(fullPath) && window.location.protocol!=='file:';
+  if(filePath.endsWith('.pdf')){
+    if(isDeployed){
+      window.open(`https://docs.google.com/viewer?url=${encoded}`,'_blank');
+    }else{
+      window.open(fullPath,'_blank');
+    }
+  }else if(filePath.endsWith('.docx')){
+    if(isDeployed){
+      window.open(`https://view.officeapps.live.com/op/embed.aspx?src=${encoded}`,'_blank');
+    }else{
+      window.open(fullPath,'_blank');
+    }
   }else{
     window.open(fullPath,'_blank');
   }
@@ -453,22 +612,22 @@ function renderModule(m){
   const taskList=m.tasks||[];
   const done=moduleDoneCount(m);
   const html=`<div class="page">
-    <div style="margin-bottom:16px"><a href="#" onclick="activeModuleId='home';render();return false" style="font-size:12px;color:var(--gray-500)">← Back to Dashboard</a></div>
+    <div class="back-link" onclick="activeModuleId='home';render()">← Back to Dashboard</div>
     <div class="hero">
-      <h1>Module ${m.num}: ${m.name}</h1>
+      <h1>Module ${m.num} · ${m.name}</h1>
       <div class="subtext">${m.overview}</div>
-      <div style="display:flex;gap:10px;margin-top:12px">
-        <span class="badge blue">Module ${m.num}</span>
-        <span class="badge">${m.tool}</span>
-        <span class="badge">⏱️ ${m.time}</span>
+      <div class="hero-badges">
+        <span class="badge blue">🧩 ${m.tool}</span>
+        <span class="badge gray">⏱️ ${m.time}</span>
+        ${m.tasks.length>0?`<span class="badge ${done===m.tasks.length?'green':'amber'}">${done}/${m.tasks.length} tasks done</span>`:`<span class="badge gray">Theory module</span>`}
       </div>
     </div>
 
     <div class="tabs">
-      <button class="tab active" onclick="switchTab('overview')">Overview</button>
-      <button class="tab" onclick="switchTab('tasks')">Tasks</button>
-      <button class="tab" onclick="switchTab('resources')">Resources</button>
-      <button class="tab" onclick="switchTab('notes')">Notes</button>
+      <button class="tab active" type="button" onclick="switchTab(event,'overview')">Overview</button>
+      <button class="tab" type="button" onclick="switchTab(event,'tasks')">Tasks</button>
+      <button class="tab" type="button" onclick="switchTab(event,'resources')">Resources</button>
+      <button class="tab" type="button" onclick="switchTab(event,'notes')">Notes</button>
     </div>
 
     <div id="overview" class="tab-content active">
@@ -491,70 +650,49 @@ function renderModule(m){
 
     <div id="tasks" class="tab-content">
       <div class="panel">
-        <div style="display:flex;justify-content:space-between;margin-bottom:16px">
-          <h3>Mandatory Tasks</h3>
-          <span class="badge red">Must complete all</span>
-        </div>
-        <div style="margin-bottom:16px">
-          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px">
-            <span>${done} of ${m.tasks.length} completed</span>
-            <span>${Math.round(done/m.tasks.length*100)}%</span>
-          </div>
+        <h3>Mandatory Tasks ${m.tasks.length>0?`<span class="badge ${done===m.tasks.length?'green':'red'}">${done}/${m.tasks.length}</span>`:''}</h3>
+        ${m.tasks.length===0?`<div class="empty-state">This is a theory module — no hands-on tasks required. Explore the Resources tab for learning materials.</div>`:`
+        <div style="margin-bottom:18px">
           <div class="progress-track"><div class="progress-fill" style="width:${Math.round(done/m.tasks.length*100)}%"></div></div>
         </div>
         ${taskList.map(t=>{
           const isDone_=isDone(t.id);
-          return `<div class="task-card" onclick="toggleTask('${t.id}')">
-            <div class="task-checkbox ${isDone_?'checked':''}" style="cursor:pointer">${isDone_?'✓':''}</div>
-            <div class="task-info" style="flex:1">
+          return `<div class="task-card" onclick="openTaskModal('${t.id}')">
+            <div class="task-checkbox ${isDone_?'checked':''}" onclick="event.stopPropagation();toggleTask('${t.id}')">${isDone_?'✓':''}</div>
+            <div class="task-info">
               <div class="task-title">${t.name}</div>
               <div class="task-meta">
                 <span>📄 ${t.file}</span>
-                <span>📁 ${t.folder}</span>
-                ${isDone_?`<span style="color:var(--accent-success)">✓ Completed</span>`:''}
+                ${isDone_?`<span class="badge green">✓ Completed</span>`:''}
               </div>
             </div>
+            <span class="task-chevron">›</span>
           </div>`;
-        }).join('')}
+        }).join('')}`}
       </div>
     </div>
 
     <div id="resources" class="tab-content">
-      <div class="panel">
+      ${m.files.length>0?`<div class="panel">
         <h3>Course Materials</h3>
         <div class="file-grid">
-          ${m.files.map(f=>`<div class="file-card">
-            <div class="file-icon">📄</div>
-            <div class="file-info">
-              <div class="file-name">${f.name}</div>
-              <div class="file-type">${f.type.toUpperCase()}</div>
-            </div>
-            <button class="btn primary" onclick="openFileInViewer('${f.path}')">Open</button>
-            <a class="btn" href="${resolveAssetPath(f.path)}" download>Download</a>
-          </div>`).join('')}
+          ${m.files.map(f=>fileCardHtml(f.name,f.type,f.path)).join('')}
         </div>
-      </div>
+      </div>`:''}
       <div class="panel">
         <h3>Official References</h3>
         <ul class="resource-list">
           ${m.resources.map(r=>`<li class="resource-item">
+            <span class="file-icon" style="width:32px;height:32px;font-size:14px">🔗</span>
             <a href="${r.url}" target="_blank" rel="noopener">${r.label}</a>
-            <span class="resource-domain">${new URL(r.url).hostname}</span>
+            <span class="resource-domain">${new URL(r.url).hostname.replace('www.','')}</span>
           </li>`).join('')}
         </ul>
       </div>
       ${UPSKILLING_PDFS.filter(p=>p.modules.includes(m.num)).length>0?`<div class="panel">
         <h3>Upskilling Materials</h3>
         <div class="file-grid">
-          ${UPSKILLING_PDFS.filter(p=>p.modules.includes(m.num)).map(p=>`<div class="file-card">
-            <div class="file-icon">📄</div>
-            <div class="file-info">
-              <div class="file-name">${p.name}</div>
-              <div class="file-type">PDF</div>
-            </div>
-            <button class="btn primary" onclick="openFileInViewer('${p.path}')">Open</button>
-            <a class="btn" href="${resolveAssetPath(p.path)}" download>Download</a>
-          </div>`).join('')}
+          ${UPSKILLING_PDFS.filter(p=>p.modules.includes(m.num)).map(p=>fileCardHtml(p.name,'pdf',p.path)).join('')}
         </div>
       </div>`:''}
     </div>
@@ -593,19 +731,11 @@ function renderModule(m){
 
 function renderFiles(){
   const html=`<div class="page">
-    <div class="hero"><h1>📁 All Course Materials</h1><div class="subtext">Access all ${MODULES.reduce((n,m)=>n+m.files.length,0)} course files</div></div>
+    <div class="hero"><h1>📁 All Course Materials</h1><div class="subtext">Browse and open all ${MODULES.reduce((n,m)=>n+m.files.length,0)} course files across every module.</div></div>
     ${MODULES.map(m=>m.files.length>0?`<div class="panel">
-      <h3>Module ${m.num}: ${m.name}</h3>
+      <h3>Module ${m.num} · ${m.name}</h3>
       <div class="file-grid">
-        ${m.files.map(f=>`<div class="file-card">
-          <div class="file-icon">📄</div>
-          <div class="file-info">
-            <div class="file-name">${f.name}</div>
-            <div class="file-type">${f.type.toUpperCase()}</div>
-          </div>
-          <button class="btn primary" onclick="openFileInViewer('${f.path}')">Open</button>
-          <a class="btn" href="${resolveAssetPath(f.path)}" download>Download</a>
-        </div>`).join('')}
+        ${m.files.map(f=>fileCardHtml(f.name,f.type,f.path)).join('')}
       </div>
     </div>`:'').join('')}
   </div>`;
@@ -614,18 +744,11 @@ function renderFiles(){
 
 function renderUpskilling(){
   const html=`<div class="page">
-    <div class="hero"><h1>📚 Upskilling Materials</h1><div class="subtext">Foundation topics for your learning journey</div></div>
+    <div class="hero"><h1>📚 Upskilling Materials</h1><div class="subtext">Foundation topics (HTML, CSS, JavaScript, SQL, ADO.NET) to prepare for the deep-skilling modules.</div></div>
     <div class="panel">
+      <h3>Foundation PDFs</h3>
       <div class="file-grid">
-        ${UPSKILLING_PDFS.map(p=>`<div class="file-card">
-          <div class="file-icon">📄</div>
-          <div class="file-info">
-            <div class="file-name">${p.name}</div>
-            <div class="file-type">PDF</div>
-          </div>
-          <button class="btn primary" onclick="openFileInViewer('${p.path}')">Open</button>
-          <a class="btn" href="${resolveAssetPath(p.path)}" download>Download</a>
-        </div>`).join('')}
+        ${UPSKILLING_PDFS.map(p=>fileCardHtml(p.name,'pdf',p.path)).join('')}
       </div>
     </div>
   </div>`;
@@ -668,21 +791,62 @@ function toggleTask(id){
   render();
 }
 
-function switchTab(tabName){
+function switchTab(ev,tabName){
   document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
   document.querySelectorAll(".tab-content").forEach(t=>t.classList.remove("active"));
-  event.target.classList.add("active");
+  ev.currentTarget.classList.add("active");
   document.getElementById(tabName).classList.add("active");
+}
+
+let currentTaskId=null;
+function openTaskModal(taskId){
+  const allTasks=MODULES.flatMap(m=>m.tasks.map(t=>({...t,files:m.files})));
+  const task=allTasks.find(t=>t.id===taskId);
+  if(!task) return;
+  currentTaskId=taskId;
+  document.getElementById("modalTaskTitle").textContent=task.name;
+  document.getElementById("modalTaskWhat").textContent=task.what||"Complete this hands-on exercise as described in the module materials. Open the related file below for full instructions and starter guidance.";
+  document.getElementById("modalTaskWhy").textContent=task.why||"This task reinforces the core concepts of the module through practice. Hands-on repetition is how these skills move from theory into something you can apply on the job.";
+  const steps=(task.steps&&task.steps.length)?task.steps:["Open the related file below to read the full exercise brief.","Set up the project in the recommended tool.","Implement the solution step by step.","Test your implementation and verify the expected output.","Mark this task complete once finished."];
+  document.getElementById("modalTaskSteps").innerHTML=steps.map(s=>`<li>${s}</li>`).join('');
+  document.getElementById("modalTaskFiles").innerHTML=(task.files&&task.files.length)?task.files.map(f=>fileCardHtml(f.name,f.type,f.path)).join(''):"<div class='empty-state'>No files for this task.</div>";
+  const btn=document.getElementById("modalCompleteBtn");
+  const done_=isDone(taskId);
+  btn.textContent=done_?"✓ Completed":"Mark as complete";
+  btn.classList.toggle("completed",done_);
+  document.getElementById("taskModal").classList.add("active");
+  document.body.style.overflow="hidden";
+}
+function closeTaskModal(){
+  document.getElementById("taskModal").classList.remove("active");
+  document.body.style.overflow="";
+  currentTaskId=null;
+}
+function completeTaskFromModal(){
+  if(!currentTaskId) return;
+  if(!isDone(currentTaskId)) toggleTask(currentTaskId);
+  closeTaskModal();
+}
+
+function toggleSidebar(force){
+  const sb=document.getElementById("sidebar");
+  const scrim=document.getElementById("scrim");
+  const open=force!==undefined?force:!sb.classList.contains("open");
+  sb.classList.toggle("open",open);
+  scrim.classList.toggle("show",open);
 }
 
 function init(){
   loadState();
   document.getElementById("logoHome").addEventListener("click",()=>{activeModuleId="home";render()});
-  document.getElementById("hamburger").addEventListener("click",()=>document.getElementById("sidebar").classList.toggle("open"));
+  document.getElementById("hamburger").addEventListener("click",()=>toggleSidebar());
+  document.getElementById("scrim").addEventListener("click",()=>toggleSidebar(false));
   document.getElementById("searchInput").addEventListener("input",renderSidebar);
   document.getElementById("filesLink").addEventListener("click",e=>{e.preventDefault();activeModuleId="files";render()});
   document.getElementById("upskillingLink").addEventListener("click",e=>{e.preventDefault();activeModuleId="upskilling";render()});
   document.getElementById("infoLink").addEventListener("click",e=>{e.preventDefault();activeModuleId="info";render()});
+  document.getElementById("taskModal").addEventListener("click",e=>{if(e.target.id==="taskModal")closeTaskModal()});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeTaskModal();toggleSidebar(false)}});
   render();
 }
 document.addEventListener("DOMContentLoaded",init);
